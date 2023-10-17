@@ -1,3 +1,8 @@
+<?php
+$pageName = 'course_add';
+$title = '課程新增';
+?>
+
 <?php include './parts/html-head.php' ?>
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>

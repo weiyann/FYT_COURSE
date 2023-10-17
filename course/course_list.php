@@ -1,3 +1,8 @@
+<?php
+$pageName = 'course_list';
+$title = '課程管理列表';
+?>
+
 <?php include './parts/html-head.php' ?>
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>

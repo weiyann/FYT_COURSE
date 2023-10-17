@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>課程管理 - FreeFyt</title>
+    <title><?= isset($title) ? "{$title} - 課程專區" : '課程專區' ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
