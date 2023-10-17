@@ -1,6 +1,10 @@
 <?php
+require './parts/connect_db.php';
 $pageName = 'course_list';
 $title = '課程管理列表';
+
+$sql = "SELECT * FROM course ORDER BY course_id DESC LIMIT 0, 20";
+$rows = $pdo->query($sql)->fetchAll();
 ?>
 
 <?php include './parts/html-head.php' ?>
@@ -11,8 +15,9 @@ $title = '課程管理列表';
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-  <!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+  <pre><?php
+  print_r($rows);
+  ?></pre>
 
 </div>
 <!-- /.container-fluid -->

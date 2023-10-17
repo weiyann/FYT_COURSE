@@ -1,7 +1,7 @@
 <?php
 require './parts/connect_db.php';
-$pageName = 'course_add';
-$title = '課程新增';
+$pageName = 'course_list';
+$title = '課程管理列表';
 ?>
 
 <?php include './parts/html-head.php' ?>
@@ -13,7 +13,7 @@ $title = '課程新增';
 <div class="container-fluid">
 
   <!-- Page Heading -->
-  <h1 class="h3 mb-4 text-gray-800">新增</h1>
+  <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
 
 </div>
 <!-- /.container-fluid -->
