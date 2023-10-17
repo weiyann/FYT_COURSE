@@ -1,3 +1,17 @@
+<?php 
+if(! isset($pageName)){
+  $pageName = '';
+}
+?>
+<style>
+  nav.navbar ul.navbar-nav .nav-link.active {
+    background-color: blue;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+</style>
+
 <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
 
@@ -26,10 +40,10 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="./course_list.php">列表</a>
+                    <a class="nav-link <?= $pageName=='course_list' ? 'active' : '' ?>" href="./course_list.php">列表</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./course_add.php">新增</a>
+                    <a class="nav-link <?= $pageName=='course_add' ? 'active' : '' ?>" href="./course_add.php">新增</a>
                 </li>
 
                 <div class="topbar-divider d-none d-sm-block"></div>
