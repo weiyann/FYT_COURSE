@@ -57,7 +57,7 @@
           <div id="collapseCourse" class="collapse" aria-labelledby="headingPages"
               data-parent="#accordionSidebar">
               <div class="bg-white py-2 collapse-inner rounded">
-                  <a class="collapse-item" href="./course/course_management.html">課程管理系統</a>
+                  <a class="collapse-item" href="./course_list.php">課程管理系統</a>
                   <a class="collapse-item" href="">報名資料管理系統</a>
               </div>
           </div>
