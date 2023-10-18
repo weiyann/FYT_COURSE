@@ -44,13 +44,13 @@ GROUP BY c.course_id
 ORDER BY c.course_id"
 ;
 $rows = $pdo->query($sql)->fetchAll();
+print_r($rows);
 $sql_t = "SELECT 
 ct.time_period, 
 ct.day_of_week,
 ct.course_id
 FROM course_time ct
 ORDER BY ct.course_id";
-
 $rows_t = $pdo->query($sql_t)->fetchAll();
 ?>
 
@@ -104,7 +104,8 @@ $rows_t = $pdo->query($sql_t)->fetchAll();
                 foreach ($rows_t as $r_t) {
                   if ($r_t['course_id'] == $r['course_id']) {
                     echo $r_t['day_of_week'];
-                  }
+                    echo '<br>';
+                  }  
                 }
                 ?>
               </td>
@@ -113,6 +114,7 @@ $rows_t = $pdo->query($sql_t)->fetchAll();
                 foreach ($rows_t as $r_t) {
                   if ($r_t['course_id'] == $r['course_id']) {
                     echo $r_t['time_period'];
+                    echo '<br>';
                   }
                 }
                 ?>

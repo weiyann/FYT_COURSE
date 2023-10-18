@@ -1,19 +1,39 @@
 <?php
-echo json_encode($_POST);
-$sql = "INSERT INTO `course`(
-  `course_name`, `email`, `mobile`, `birthday`, `address`, `created_at`
-  ) VALUES (
-    ?, ?, ?, ?, ?, NOW()
-  )";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-  $_POST['name'],
-  $_POST['email'],
-  $_POST['mobile'],
-  $_POST['birthday'],
-  $_POST['address'],
-]);
-echo json_encode([
+require './parts/connect_db.php';
+
+$output = [
   'postData' => $_POST,
-  'rowCount' => $stmt->rowCount(),
+  'success' => false,
+  // 'error' => '',
+  'errors' => [],
+];
+
+# 告訴用戶端, 資料格式為 JSON
+header('Content-Type: application/json');
+
+$tempId = '7+1';
+
+$sql_c = "INSERT INTO `course`(
+  `course_name`, `course_description`, `coach_id`, `is_published`, `creation_date`
+  ) VALUES (
+    ?, ?, ?, ?, NOW()
+  )";
+$sql_t = "INSERT INTO `course_time`(`day_of_week`, `time_period`, `course_id`) VALUES (?,?,?)";
+
+$stmt_c = $pdo->prepare($sql_c);
+$stmt_t = $pdo->prepare($sql_t);
+
+$stmt_c->execute([
+  $_POST['course_name'],
+  $_POST['course_description'],
+  $_POST['coach_id'],
+  $_POST['is_published'],
 ]);
+$stmt_t->execute([
+  $_POST['day_of_week'],
+  $_POST['time_period'],
+  $_POST['course_id'],
+]);
+$output['success'] = boolval($stmt_c->rowCount());
+$output['success'] = boolval($stmt_t->rowCount());
+echo json_encode($output);
