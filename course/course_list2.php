@@ -52,13 +52,24 @@ ct.course_id
 FROM course_time ct
 ORDER BY ct.course_id";
 $rows_t = $pdo->query($sql_t)->fetchAll();
+
+$sql_cat="SELECT cat.category, ccr.course_id 
+FROM category cat 
+INNER JOIN course_category_relation ccr ON cat.category_id = ccr.category_id
+ORDER BY ccr.course_id";
+
+$rows_cat = $pdo->query($sql_cat)->fetchAll();
 ?>
 
 <?php include './parts/html-head.php' ?>
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>
 
-
+<style>
+  .tbwidth{
+    width: 150px;
+  }
+</style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -99,7 +110,7 @@ $rows_t = $pdo->query($sql_t)->fetchAll();
               <td>
                 <?= $r['is_published'] ?>
               </td>
-              <td>
+              <td style="width:100px">
               <?php 
                 foreach ($rows_t as $r_t) {
                   if ($r_t['course_id'] == $r['course_id']) {
@@ -120,7 +131,14 @@ $rows_t = $pdo->query($sql_t)->fetchAll();
                 ?>
               </td>
               <td>
-                <?= $r['category'] ?>
+                <?php
+                foreach ($rows_cat as $r_cat){
+                  if($r_cat['course_id'] == $r['course_id']){
+                    echo $r_cat['category'];
+                    echo '<br>';
+                  }
+                }
+                ?>
               </td>
             </tr>
           <?php endforeach ?>
