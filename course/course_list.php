@@ -39,7 +39,6 @@ INNER JOIN course_category_relation ccr ON c.course_id = ccr.course_id
 INNER JOIN category cat ON ccr.category_id = cat.category_id
 INNER JOIN coach co ON c.coach_id = co.coach_id
 INNER JOIN member m ON co.member_id = m.member_id
-GROUP BY c.course_id
 ORDER BY c.course_id"
 ;
 $rows = $pdo->query($sql)->fetchAll();
@@ -68,13 +67,13 @@ $rows_t = $pdo->query($sql_t)->fetchAll();
           <tr>
             <th scope="col">#</th>
             <th scope="col">課程名稱</th>
-            <th scope="col">課程描述</th>
             <th scope="col">教練姓名</th>
-            <th scope="col">日期</th>
-            <th scope="col">上架狀態</th>
-            <th scope="col">星期</th>
-            <th scope="col">時間</th>
             <th scope="col">分類</th>
+            <th scope="col">星期</th>
+            <th scope="col">上課時間</th>
+            <th scope="col">課程描述</th>
+            <th scope="col">上架狀態</th>
+            <th scope="col">建立日期</th>
           </tr>
         </thead>
         <tbody>
@@ -87,37 +86,25 @@ $rows_t = $pdo->query($sql_t)->fetchAll();
                 <?= $r['course_name'] ?>
               </td>
               <td>
-                <?= $r['course_description'] ?>
-              </td>
-              <td>
                 <?= $r['member_name'] ?>
               </td>
               <td>
-                <?= $r['creation_date'] ?>
+                <?= $r['category'] ?>
+              </td>
+              <td>
+                <?= $r['day_of_week'] ?>
+              </td>
+              <td>
+                <?= $r['time_period'] ?>
+              </td>
+              <td>
+                <?= $r['course_description'] ?>
               </td>
               <td>
                 <?= $r['is_published'] ?>
               </td>
               <td>
-              <?php 
-                foreach ($rows_t as $r_t) {
-                  if ($r_t['course_id'] == $r['course_id']) {
-                    echo $r_t['day_of_week'];
-                  }
-                }
-                ?>
-              </td>
-              <td>              
-                <?php 
-                foreach ($rows_t as $r_t) {
-                  if ($r_t['course_id'] == $r['course_id']) {
-                    echo $r_t['time_period'];
-                  }
-                }
-                ?>
-              </td>
-              <td>
-                <?= $r['category'] ?>
+                <?= $r['creation_date'] ?>
               </td>
             </tr>
           <?php endforeach ?>
