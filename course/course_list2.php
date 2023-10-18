@@ -1,3 +1,4 @@
+
 <?php
 require './parts/connect_db.php';
 $pageName = 'course_list';
