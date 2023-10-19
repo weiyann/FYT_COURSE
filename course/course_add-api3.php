@@ -37,7 +37,7 @@ $stmt_c->execute([
   $_POST['is_published'],
 ]);
 
-$course_id = $pdo->lastInsertId();
+$course_id = $pdo->lastInsertId();// 拿到最後一次建立的course_id
 
 // 插入数据到 course_time 表
 $sql_t = "INSERT INTO `course_time`(`day_of_week`, `time_period`, `course_id`) VALUES (?, ?, ?)";
@@ -63,5 +63,4 @@ $stmt_CCR = $pdo->prepare($sql_CCR);
 $stmt_CCR->execute([
   $category_id,
   $course_id
-  // 使用上一个插入操作生成的 course_id
 ]);

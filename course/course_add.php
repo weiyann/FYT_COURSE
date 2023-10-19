@@ -46,7 +46,7 @@ $option_cat = $stmt_cat->fetchAll();
           </div>
 -->
           <div class="form-floating">
-          <label for="category">課程分類</label>
+            <label for="category">課程分類</label>
             <select class="form-select form-control" id="category" name="category">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
@@ -57,15 +57,15 @@ $option_cat = $stmt_cat->fetchAll();
             </select>
           </div>
           <div class="form-floating">
-          <label for="day_of_week">上課星期</label>
+            <label for="day_of_week">上課星期</label>
             <select class="form-select form-control" id="day_of_week" name="day_of_week">
               <option selected>星期一</option>
-              <option>星期二</option>              
-              <option>星期三</option>              
-              <option>星期四</option>              
-              <option>星期五</option>              
-              <option>星期六</option>              
-              <option>星期日</option>              
+              <option>星期二</option>
+              <option>星期三</option>
+              <option>星期四</option>
+              <option>星期五</option>
+              <option>星期六</option>
+              <option>星期日</option>
             </select>
           </div>
           <!--
@@ -76,6 +76,9 @@ $option_cat = $stmt_cat->fetchAll();
           </div>
           -->
           <div class="mb-3">
+            <button type="button" class="btn btn-warning" onclick="addItem()">新增時間</button>
+          </div>
+          <div class="mb-3 time-box">
             <label for="time_period" class="form-label">上課時間</label>
             <input type="time" class="form-control" id="time_period" name="time_period">
             <div class="form-text"></div>
@@ -87,10 +90,10 @@ $option_cat = $stmt_cat->fetchAll();
             <div class="form-text"></div>
           </div>
           <div class="form-floating">
-          <label for="is_published">上架狀態</label>
+            <label for="is_published">上架狀態</label>
             <select class="form-select form-control" id="is_published" name="is_published">
               <option selected>上架</option>
-              <option>未上架</option>                         
+              <option>未上架</option>
             </select>
           </div>
           <!--
@@ -100,7 +103,7 @@ $option_cat = $stmt_cat->fetchAll();
             <div class="form-text"></div>
           </div>
           -->
-          
+
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
@@ -134,7 +137,7 @@ $option_cat = $stmt_cat->fetchAll();
     // TODO: 資料在送出之前, 要檢查格式
     // 建立只有資料的表單
     const fd = new FormData(document.form1);
-    fetch('course_add-api3.php', {
+    fetch('course_add-api2.php', {
       method: 'POST',
       body: fd, // 送出的格式會自動是 multipart/form-data
     }).then(r => r.json())
@@ -144,6 +147,23 @@ $option_cat = $stmt_cat->fetchAll();
         });
       })
       .catch(ex => console.log(ex))
+  }
+
+  const time_box = $('.time-box')
+  const timeTpl = () => {
+    return `<div class="mb-3 time-box">
+            <label for="time_period" class="form-label">
+            <button type="button" class="btn btn-danger" onclick="removeItem(event)">刪除時間</button></label>
+            <input type="time" class="form-control" id="time_period" name="time_period">
+            <div class="form-text"></div>
+          </div>`
+  }
+  function addItem(){
+    time_box.append(timeTpl())
+  }
+  function removeItem(e){
+    const $el=$(e.target);
+    $el.closest('.time-box').remove();
   }
 </script>
 <?php include './parts/html-foot.php' ?>
