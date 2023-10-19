@@ -65,11 +65,11 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
             <th scope="col">課程名稱</th>
             <th scope="col">課程描述</th>
             <th scope="col">教練姓名</th>
-            <th scope="col">日期</th>
             <th scope="col">上架狀態</th>
             <th scope="col">星期</th>
             <th scope="col">時間</th>
             <th scope="col">分類</th>
+            <th scope="col">建立日期</th>
             <th scope="col">
               <i class="fa-solid fa-file-pen"></i>
             </th>
@@ -93,9 +93,7 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
               <td>
                 <?= $r['member_name'] ?>
               </td>
-              <td>
-                <?= $r['creation_date'] ?>
-              </td>
+              
               <td>
                 <?= $r['is_published'] ?>
               </td>
@@ -128,6 +126,9 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
                   }
                 }
                 ?>
+              </td>
+              <td>
+                <?= $r['creation_date'] ?>
               </td>
               <td><a href="edit.php?course_id=<?= $r['course_id'] ?>">
                   <i class="fa-solid fa-file-pen"></i>

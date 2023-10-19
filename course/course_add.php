@@ -134,7 +134,7 @@ $option_cat = $stmt_cat->fetchAll();
     // TODO: 資料在送出之前, 要檢查格式
     // 建立只有資料的表單
     const fd = new FormData(document.form1);
-    fetch('course_add-api2.php', {
+    fetch('course_add-api3.php', {
       method: 'POST',
       body: fd, // 送出的格式會自動是 multipart/form-data
     }).then(r => r.json())
