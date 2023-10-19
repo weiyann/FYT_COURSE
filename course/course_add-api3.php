@@ -30,7 +30,6 @@ if ($stmt_member->rowCount() > 0) { //rowCount()會返回查詢成功的行數
 
   if ($stmt_coach->rowCount() > 0) {
     $coach_id = $stmt_coach->fetchColumn();
-
     // 插入数据到 course 表
     $sql_c = "INSERT INTO `course`(`course_name`, `course_description`, `coach_id`, `is_published`, `creation_date`) VALUES (?, ?, ?, ?, NOW())";
     $stmt_c = $pdo->prepare($sql_c);
@@ -51,7 +50,6 @@ if ($stmt_member->rowCount() > 0) { //rowCount()會返回查詢成功的行數
       $pdo->lastInsertId(),
       // 使用上一个插入操作生成的 course_id
     ]);
-    
     //根據category 獲取 category_id
     $sql_cat = "SELECT ccr.category_id
     FROM course_category_relation ccr

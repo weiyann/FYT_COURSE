@@ -1,4 +1,3 @@
-
 <?php
 require './parts/connect_db.php';
 $pageName = 'course_list';
@@ -22,7 +21,7 @@ INNER JOIN category cat ON ccr.category_id = cat.category_id
 INNER JOIN coach co ON c.coach_id = co.coach_id
 INNER JOIN member m ON co.member_id = m.member_id
 GROUP BY c.course_id
-ORDER BY c.course_id"
+ORDER BY c.course_id DESC"
 ;
 $rows = $pdo->query($sql)->fetchAll();
 
@@ -34,7 +33,7 @@ FROM course_time ct
 ORDER BY ct.course_id";
 $rows_t = $pdo->query($sql_t)->fetchAll();
 
-$sql_cat="SELECT cat.category, ccr.course_id 
+$sql_cat = "SELECT cat.category, ccr.course_id 
 FROM category cat 
 INNER JOIN course_category_relation ccr ON cat.category_id = ccr.category_id
 ORDER BY ccr.course_id";
@@ -47,7 +46,7 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
 <?php include './parts/topbar.php' ?>
 
 <style>
-  .tbwidth{
+  .tbwidth {
     width: 150px;
   }
 </style>
@@ -59,6 +58,9 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
+            <th scope="col">
+              <i class="fa-solid fa-trash-can"></i>
+            </th>
             <th scope="col">#</th>
             <th scope="col">課程名稱</th>
             <th scope="col">課程描述</th>
@@ -68,11 +70,17 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
             <th scope="col">星期</th>
             <th scope="col">時間</th>
             <th scope="col">分類</th>
+            <th scope="col">
+              <i class="fa-solid fa-file-pen"></i>
+            </th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($rows as $r): ?>
             <tr>
+            <td><a href="javascript: deleteItem(<?= $r['course_id'] ?>)">
+                  <i class="fa-solid fa-trash-can"></i>
+                </a></td>
               <td>
                 <?= $r['course_id'] ?>
               </td>
@@ -92,17 +100,17 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
                 <?= $r['is_published'] ?>
               </td>
               <td style="width:100px">
-              <?php 
+                <?php
                 foreach ($rows_t as $r_t) {
                   if ($r_t['course_id'] == $r['course_id']) {
                     echo $r_t['day_of_week'];
                     echo '<br>';
-                  }  
+                  }
                 }
                 ?>
               </td>
-              <td>              
-                <?php 
+              <td>
+                <?php
                 foreach ($rows_t as $r_t) {
                   if ($r_t['course_id'] == $r['course_id']) {
                     echo $r_t['time_period'];
@@ -113,14 +121,17 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
               </td>
               <td>
                 <?php
-                foreach ($rows_cat as $r_cat){
-                  if($r_cat['course_id'] == $r['course_id']){
+                foreach ($rows_cat as $r_cat) {
+                  if ($r_cat['course_id'] == $r['course_id']) {
                     echo $r_cat['category'];
                     echo '<br>';
                   }
                 }
                 ?>
               </td>
+              <td><a href="edit.php?course_id=<?= $r['course_id'] ?>">
+                  <i class="fa-solid fa-file-pen"></i>
+                </a></td>
             </tr>
           <?php endforeach ?>
         </tbody>
@@ -152,5 +163,11 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
 
 <?php include './parts/scripts.php' ?>
 
-
+<script>
+  function deleteItem(course_id) {
+    if (confirm(`確定要刪除編號為 ${course_id} 的資料嗎?`)) {
+      location.href = 'delete.php?course_id=' + course_id;
+    }
+  }
+</script>
 <?php include './parts/html-foot.php' ?>
