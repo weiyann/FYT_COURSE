@@ -37,7 +37,7 @@ $stmt_c->execute([
   $_POST['is_published'],
 ]);
 
-$course_id = $pdo->lastInsertId();// 拿到最後一次建立的course_id
+$course_id = $pdo->lastInsertId(); // 拿到最後一次建立的course_id
 
 // 插入数据到 course_time 表
 /*
@@ -59,7 +59,7 @@ foreach ($timePeriods as $timePeriod) {
     $course_id
   ]);
 }
-
+/*
 //根據category 獲取 category_id
 $sql_cat = "SELECT ccr.category_id
     FROM course_category_relation ccr
@@ -76,3 +76,21 @@ $stmt_CCR->execute([
   $category_id,
   $course_id
 ]);
+*/
+$categorys = $_POST['category'];
+
+foreach ($categorys as $category) {
+  // 根据 category 获取 category_id
+  $sql_cat = "SELECT ccr.category_id
+    FROM course_category_relation ccr
+    JOIN category c ON ccr.category_id = c.category_id
+    WHERE c.category = ?";
+  $stmt_cat = $pdo->prepare($sql_cat);
+  $stmt_cat->execute([$category]);
+  $category_id = $stmt_cat->fetchColumn();
+
+  // 插入数据到 course_category_relation 表
+  $sql_CCR = "INSERT INTO `course_category_relation`(`category_id`, `course_id`) VALUES (?, ?)";
+  $stmt_CCR = $pdo->prepare($sql_CCR);
+  $stmt_CCR->execute([$category_id, $course_id]);
+}

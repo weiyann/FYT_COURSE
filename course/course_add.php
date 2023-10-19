@@ -45,9 +45,12 @@ $option_cat = $stmt_cat->fetchAll();
             <div class="form-text"></div>
           </div>
 -->
-          <div class="form-floating">
+          <div class="mb-3">
+            <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
+          </div>
+          <div class="form-floating cat-box">
             <label for="category">課程分類</label>
-            <select class="form-select form-control" id="category" name="category">
+            <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
                 <option>
@@ -76,7 +79,7 @@ $option_cat = $stmt_cat->fetchAll();
           </div>
           -->
           <div class="mb-3">
-            <button type="button" class="btn btn-warning" onclick="addItem()">新增時間</button>
+            <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
           </div>
           <div class="mb-3 time-box">
             <label for="time_period" class="form-label">上課時間</label>
@@ -149,22 +152,46 @@ $option_cat = $stmt_cat->fetchAll();
       .catch(ex => console.log(ex));
   }
 
-  const time_box = $('.time-box')
+  const time_box = $('.time-box');
+  const cat_box = $('.cat-box');
+
   const timeTpl = () => {
     return `<div class="mb-3 time-box">
             <label for="time_period" class="form-label">
-            <button type="button" class="btn btn-danger" onclick="removeItem(event)">刪除時間</button></label>
+            <button type="button" class="btn btn-danger" onclick="removeTime(event)">刪除時間</button></label>
             <input type="time" class="form-control" id="time_period" name="time_period[]">
             <div class="form-text"></div>
           </div>`
   }
-  function addItem(){
+  function addTime() {
     time_box.append(timeTpl())
   }
-  function removeItem(e){
-    const $el=$(e.target);
+  function removeTime(e) {
+    const $el = $(e.target);
     $el.closest('.time-box').remove();
   }
- 
+
+  const catTpl = () =>{
+    return `<div class="form-floating cat-box">
+            <label for="category">
+            <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label></label>
+            <select class="form-select form-control" id="category" name="category[]">
+              <option selected>請選擇課程分類</option>
+              <?php foreach ($option_cat as $o): ?>
+                <option>
+                  <?= $o['category'] ?>
+                </option>
+              <?php endforeach ?>
+            </select>
+          </div>`
+  }
+  function addCat() {
+    cat_box.append(catTpl())
+  }
+  function removeCat(e) {
+    const $el = $(e.target);
+    $el.closest('.cat-box').remove();
+  }
+
 </script>
 <?php include './parts/html-foot.php' ?>
