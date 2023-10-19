@@ -19,9 +19,11 @@ $sql_c = "INSERT INTO `course`(
     ?, ?, ?, ?, NOW()
   )";
 $sql_t = "INSERT INTO `course_time`(`day_of_week`, `time_period`, `course_id`) VALUES (?,?,?)";
+$sql_CCR="INSERT INTO `course_category_relation`(`course_id`, `category_id`) VALUES (?,?)";
 
 $stmt_c = $pdo->prepare($sql_c);
 $stmt_t = $pdo->prepare($sql_t);
+$stmt_CCR=$pdo->prepare($sql_CCR);
 
 $stmt_c->execute([
   $_POST['course_name'],
@@ -34,6 +36,11 @@ $stmt_t->execute([
   $_POST['time_period'],
   $_POST['course_id'],
 ]);
+$stmt_CCR->execute([
+  $_POST['course_id'],
+  $_POST['category_id'],
+]);
 $output['success'] = boolval($stmt_c->rowCount());
 $output['success'] = boolval($stmt_t->rowCount());
+$output['success'] = boolval($stmt_CCR->rowCount());
 echo json_encode($output);

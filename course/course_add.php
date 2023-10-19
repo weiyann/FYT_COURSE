@@ -29,8 +29,8 @@ $title = '課程新增';
             <div class="form-text"></div>
           </div>
           <div class="mb-3">
-            <label for="category" class="form-label">分類</label>
-            <input type="text" class="form-control" id="category" name="category">
+            <label for="category_id" class="form-label">課程分類id</label>
+            <input type="text" class="form-control" id="category_id" name="category_id">
             <div class="form-text"></div>
           </div>
           <div class="mb-3">
@@ -56,10 +56,16 @@ $title = '課程新增';
           </div>
           <div class="mb-3">
             <label for="course_id" class="form-label">course_id</label>
-            <textarea class="form-control" name="course_id" id="course_id" cols="30"
-              rows="3"></textarea>
+            <textarea class="form-control" name="course_id" id="course_id" cols="30" rows="3"></textarea>
             <div class="form-text"></div>
           </div>
+          <div class="mb-3">
+            <label for="coach_id" class="form-label">coach_id</label>
+            <input type="text" class="form-control" id="coach_id" name="coach_id">
+            <div class="form-text"></div>
+          </div>
+
+
 
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
