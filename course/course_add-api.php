@@ -11,7 +11,7 @@ $output = [
 # 告訴用戶端, 資料格式為 JSON
 header('Content-Type: application/json');
 
-$tempId = '7+1';
+$tempId = '7+1'; // 課程id
 
 $sql_c = "INSERT INTO `course`(
   `course_name`, `course_description`, `coach_id`, `is_published`, `creation_date`

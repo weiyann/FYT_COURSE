@@ -60,8 +60,8 @@ $title = '課程新增';
             <div class="form-text"></div>
           </div>
           <div class="mb-3">
-            <label for="coach_id" class="form-label">coach_id</label>
-            <input type="text" class="form-control" id="coach_id" name="coach_id">
+            <label for="member_name" class="form-label">教練姓名</label>
+            <input type="text" class="form-control" id="member_name" name="member_name">
             <div class="form-text"></div>
           </div>
 
@@ -100,7 +100,7 @@ $title = '課程新增';
     // TODO: 資料在送出之前, 要檢查格式
     // 建立只有資料的表單
     const fd = new FormData(document.form1);
-    fetch('course_add-api.php', {
+    fetch('course_add-api2.php', {
       method: 'POST',
       body: fd, // 送出的格式會自動是 multipart/form-data
     }).then(r => r.json())
