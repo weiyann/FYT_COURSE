@@ -49,16 +49,23 @@ $stmt_t->execute([
   $course_id
 ]);
 */
+
 $timePeriods = $_POST['time_period'];
-foreach ($timePeriods as $timePeriod) {
-  $sql_t = "INSERT INTO `course_time`(`day_of_week`, `time_period`, `course_id`) VALUES (?, ?, ?)";
-  $stmt_t = $pdo->prepare($sql_t);
-  $stmt_t->execute([
-    $_POST['day_of_week'],
-    $timePeriod,
-    $course_id
-  ]);
+$daysOfWeek = $_POST['day_of_week'];
+
+foreach ($timePeriods as $index => $timePeriod) {
+    $dayOfWeek = $daysOfWeek[$index];
+
+    // 插入数据到 course_time 表
+    $sql_t = "INSERT INTO `course_time`(`day_of_week`, `time_period`, `course_id`) VALUES (?, ?, ?)";
+    $stmt_t = $pdo->prepare($sql_t);
+    $stmt_t->execute([
+        $dayOfWeek,
+        $timePeriod,
+        $course_id
+    ]);
 }
+
 /*
 //根據category 獲取 category_id
 $sql_cat = "SELECT ccr.category_id
