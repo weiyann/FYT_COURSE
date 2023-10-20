@@ -5,7 +5,7 @@ if (empty($course_id)) {
   header('Location: course_list.php');
   exit; // 結束程式
 }
-/*
+
 $sql = "SELECT 
 c.course_id, 
 c.course_name, 
@@ -22,11 +22,10 @@ INNER JOIN course_category_relation ccr ON c.course_id = ccr.course_id
 INNER JOIN category cat ON ccr.category_id = cat.category_id
 INNER JOIN coach co ON c.coach_id = co.coach_id
 INNER JOIN member m ON co.member_id = m.member_id
-WHERE course_id={$course_id}
-GROUP BY c.course_id
-";
+WHERE c.course_id={$course_id}
+GROUP BY c.course_id";
 $row = $pdo->query($sql)->fetch();
-*/
+
 
 $pageName = 'course_edit';
 $title = '課程編輯';
@@ -39,7 +38,19 @@ FROM course_time ct
 where course_id={$course_id}
 ORDER BY ct.course_id";
 $rows_t = $pdo->query($sql_t)->fetchAll();
-print_r($rows_t);
+//print_r($rows_t);
+
+$sql_cat = "SELECT cat.category, ccr.course_id 
+FROM category cat 
+INNER JOIN course_category_relation ccr ON cat.category_id = ccr.category_id
+where course_id={$course_id}
+ORDER BY ccr.course_id";
+$rows_cat = $pdo->query($sql_cat)->fetchAll();
+print_r($rows_cat);
+
+$sql_cat2 = 'SELECT * FROM category ORDER BY category_id';
+$stmt_cat = $pdo->query($sql_cat2);
+$option_cat = $stmt_cat->fetchAll();
 ?>
 
 <?php include './parts/html-head.php' ?>
@@ -68,36 +79,34 @@ print_r($rows_t);
         <form name="form1" onsubmit="sendData(event)">
           <div class="mb-3">
             <label for="course_name" class="form-label">課程名稱</label>
-            <input type="text" class="form-control" id="course_name" name="course_name">
+            <input type="text" class="form-control" id="course_name" name="course_name" value=<?= htmlentities($row['course_name']) ?>>
             <div class="form-text"></div>
           </div>
 
           <div class="mb-3">
             <label for="member_name" class="form-label">教練姓名</label>
-            <input type="text" class="form-control" id="member_name" name="member_name">
+            <input type="text" class="form-control" id="member_name" name="member_name" value=<?= htmlentities($row['member_name']) ?>>
             <div class="form-text"></div>
           </div>
-          <!--
-          <div class="mb-3">
-            <label for="category_id" class="form-label">課程分類id</label>
-            <input type="text" class="form-control" id="category_id" name="category_id">
-            <div class="form-text"></div>
-          </div>
--->
+          
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
           </div>
+         
           <div class="form-floating cat-box">
+         
             <label for="category">課程分類</label>
+            <?php foreach ($rows_cat as $r_cat):?>
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                <option>
-                  <?= $o['category'] ?>
+                <option <?= $o['category']==$r_cat['category']?'selected':'' ?>>
+                  <?= $o['category']?>
                 </option>
               <?php endforeach ?>
             </select>
             <div class="form-text"></div>
+            <?php endforeach ?>
           </div>
 
           <div class="mb-3">
@@ -120,7 +129,7 @@ print_r($rows_t);
 
             <div class="mb-3">
               <label for="time_period" class="form-label">上課時間</label>
-              <input type="time" class="form-control" id="time_period" name="time_period[]">
+              <input type="time" class="form-control" id="time_period" name="time_period[]" value=<?= $rt['time_period'] ?>>
               <div class="form-text"></div>
             </div>
             <?php endforeach ?>
@@ -128,23 +137,16 @@ print_r($rows_t);
           <div class="mb-3">
             <label for="course_description" class="form-label">課程描述</label>
             <textarea class="form-control" name="course_description" id="course_description" cols="30"
-              rows="3"></textarea>
+              rows="3"><?= htmlentities($row['course_description']) ?></textarea>
             <div class="form-text"></div>
           </div>
           <div class="form-floating">
             <label for="is_published">上架狀態</label>
-            <select class="form-select form-control" id="is_published" name="is_published">
-              <option selected>上架</option>
-              <option>未上架</option>
+            <select class="form-select form-control" id="is_published" name="is_published" >
+              <option <?= ($row['is_published'] =='上架')?'selected':'' ?>>上架</option>
+              <option <?= ($row['is_published'] =='未上架')?'selected':'' ?>>未上架</option>
             </select>
           </div>
-          <!--
-          <div class="mb-3">
-            <label for="is_published" class="form-label">上架狀態</label>
-            <input type="text" class="form-control" id="is_published" name="is_published">
-            <div class="form-text"></div>
-          </div>
-          -->
 
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>

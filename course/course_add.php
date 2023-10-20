@@ -200,7 +200,7 @@ $option_cat = $stmt_cat->fetchAll();
         });
         if (data.success) {
           alert('資料新增成功');
-          //location.href = "./list.php"
+          //location.href = "./course_list.php"
         }else{
           alert('錯誤')
         }
