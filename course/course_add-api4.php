@@ -49,7 +49,6 @@ $stmt_t->execute([
   $course_id
 ]);
 */
-
 $timePeriods = $_POST['time_period'];
 $daysOfWeek = $_POST['day_of_week'];
 
@@ -65,7 +64,6 @@ foreach ($timePeriods as $index => $timePeriod) {
         $course_id
     ]);
 }
-
 /*
 //根據category 獲取 category_id
 $sql_cat = "SELECT ccr.category_id
@@ -101,5 +99,3 @@ foreach ($categorys as $category) {
   $stmt_CCR = $pdo->prepare($sql_CCR);
   $stmt_CCR->execute([$category_id, $course_id]);
 }
-$output['success'] = boolval($stmt_member->rowCount()&&$stmt_t->rowCount()&&$stmt_CCR->rowCount()) ;
-echo json_encode($output);

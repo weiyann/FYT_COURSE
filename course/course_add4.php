@@ -11,11 +11,6 @@ $option_cat = $stmt_cat->fetchAll();
 <?php include './parts/html-head.php' ?>
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>
-<style>
-  form .form-text {
-    color: red;
-  }
-</style>
 
 
 <!-- Begin Page Content -->
@@ -63,31 +58,33 @@ $option_cat = $stmt_cat->fetchAll();
                 </option>
               <?php endforeach ?>
             </select>
+          </div>
+          <div class="form-floating">
+            <label for="day_of_week">上課星期</label>
+            <select class="form-select form-control" id="day_of_week" name="day_of_week">
+              <option selected>星期一</option>
+              <option>星期二</option>
+              <option>星期三</option>
+              <option>星期四</option>
+              <option>星期五</option>
+              <option>星期六</option>
+              <option>星期日</option>
+            </select>
+          </div>
+          <!--
+          <div class="mb-3">
+            <label for="day_of_week" class="form-label">上課星期</label>
+            <input type="text" class="form-control" id="day_of_week" name="day_of_week">
             <div class="form-text"></div>
           </div>
-
+          -->
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
           </div>
-          <div class="time-box border border-secondary">
-            <div class="form-floating">
-              <label for="day_of_week">上課星期</label>
-              <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
-                <option selected>星期一</option>
-                <option>星期二</option>
-                <option>星期三</option>
-                <option>星期四</option>
-                <option>星期五</option>
-                <option>星期六</option>
-                <option>星期日</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label for="time_period" class="form-label">上課時間</label>
-              <input type="time" class="form-control" id="time_period" name="time_period[]">
-              <div class="form-text"></div>
-            </div>
+          <div class="mb-3 time-box">
+            <label for="time_period" class="form-label">上課時間</label>
+            <input type="time" class="form-control" id="time_period" name="time_period[]">
+            <div class="form-text"></div>
           </div>
           <div class="mb-3">
             <label for="course_description" class="form-label">課程描述</label>
@@ -138,54 +135,12 @@ $option_cat = $stmt_cat->fetchAll();
 <?php include './parts/scripts.php' ?>
 
 <script>
-  const course_name_in = document.form1.course_name;
-  const member_name_in = document.form1.member_name;
-  const category_in = document.form1.category;
-  const time_in = document.form1.time_period;
-  const description_in = document.form1.course_description;
-
-
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
-
-    // 外觀要回復原來的狀態
-
     // TODO: 資料在送出之前, 要檢查格式
-    let isPass = true;
-
-
-    if (course_name_in.value < 1) {
-      isPass = false;
-      course_name_in.style.border = '2px solid red';
-      course_name_in.nextElementSibling.innerHTML = '請填寫正確的課程名稱'
-    }
-    if (member_name_in.value < 1) {
-      isPass = false;
-      member_name_in.style.border = '2px solid red';
-      member_name_in.nextElementSibling.innerHTML = '請填寫正確的教練姓名'
-    }
-    if (category_in.value == '請選擇課程分類') {
-      isPass = false;
-      category_in.style.border = '2px solid red';
-      category_in.nextElementSibling.innerHTML = '請選擇課程分類'
-    }
-    if (!time_in.value) {
-      isPass = false;
-      time_in.style.border = '2px solid red';
-      time_in.nextElementSibling.innerHTML = '請選擇課程時間'
-    }
-    if (description_in.value<1) {
-      isPass = false;
-      description_in.style.border = '2px solid red';
-      description_in.nextElementSibling.innerHTML = '請輸入課程描述'
-    }
-
-    if (!isPass) {
-      return;
-    }
     // 建立只有資料的表單
     const fd = new FormData(document.form1);
-    fetch('course_add-api3.php', {
+    fetch('course_add-api4.php', {
       method: 'POST',
       body: fd, // 送出的格式會自動是 multipart/form-data
     }).then(r => r.json())
@@ -201,27 +156,11 @@ $option_cat = $stmt_cat->fetchAll();
   const cat_box = $('.cat-box');
 
   const timeTpl = () => {
-    return `<div class="time-box border border-secondary">
-    <div class="form-floating">
-              <label for="day_of_week">上課星期
-              <button type="button" class="btn btn-danger" onclick="removeTime(event)">刪除時間</button>
-              </label>
-              <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
-                <option selected>星期一</option>
-                <option>星期二</option>
-                <option>星期三</option>
-                <option>星期四</option>
-                <option>星期五</option>
-                <option>星期六</option>
-                <option>星期日</option>
-              </select>
-            </div>
-  
-    <div class="mb-3">
-            <label for="time_period" class="form-label">上課時間</label>
+    return `<div class="mb-3 time-box">
+            <label for="time_period" class="form-label">
+            <button type="button" class="btn btn-danger" onclick="removeTime(event)">刪除時間</button></label>
             <input type="time" class="form-control" id="time_period" name="time_period[]">
             <div class="form-text"></div>
-          </div>
           </div>`
   }
   function addTime() {
@@ -232,16 +171,16 @@ $option_cat = $stmt_cat->fetchAll();
     $el.closest('.time-box').remove();
   }
 
-  const catTpl = () => {
+  const catTpl = () =>{
     return `<div class="form-floating cat-box">
             <label for="category">
             <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label></label>
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                          <option>
-                            <?= $o['category'] ?>
-                          </option>
+                <option>
+                  <?= $o['category'] ?>
+                </option>
               <?php endforeach ?>
             </select>
           </div>`
