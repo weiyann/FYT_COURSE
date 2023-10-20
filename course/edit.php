@@ -78,65 +78,70 @@ $option_cat = $stmt_cat->fetchAll();
         <form name="form1" onsubmit="sendData(event)">
           <div class="mb-3">
             <label for="course_name" class="form-label">課程名稱</label>
-            <input type="text" class="form-control" id="course_name" name="course_name" value=<?= htmlentities($row['course_name']) ?>>
+            <input type="text" class="form-control" id="course_name" name="course_name"
+              value=<?= htmlentities($row['course_name']) ?>>
             <div class="form-text"></div>
           </div>
 
           <div class="mb-3">
             <label for="member_name" class="form-label">教練姓名</label>
-            <input type="text" class="form-control" id="member_name" name="member_name" value=<?= htmlentities($row['member_name']) ?>>
+            <input type="text" class="form-control" id="member_name" name="member_name"
+              value=<?= htmlentities($row['member_name']) ?>>
             <div class="form-text"></div>
           </div>
-          
+
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
           </div>
 
           <div>課程分類</div>
-          <?php foreach ($rows_cat as $index => $r_cat):?>
-          <div class="form-floating cat-box">       
-            <label for="category"></label>
-           <?php if($index>0):?>
-            <div class="btn btn-danger" onclick="removeCat(event)" >刪除分類</div>
-            <?php endif ?>
-            <select class="form-select form-control" id="category" name="category[]">
-              <option selected>請選擇課程分類</option>
-              <?php foreach ($option_cat as $o): ?>
-                <option <?= $o['category']==$r_cat['category']?'selected':'' ?>>
-                  <?= $o['category']?>
-                </option>
-              <?php endforeach ?>
-            </select>
-            <div class="form-text"></div>
+          <?php foreach ($rows_cat as $index => $r_cat): ?>
+            <div class="form-floating cat-box">
+              <label for="category"></label>
+              <?php if ($index > 0): ?>
+                <div class="btn btn-danger" onclick="removeCat(event)">刪除分類</div>
+              <?php endif ?>
+              <select class="form-select form-control" id="category" name="category[]">
+                <option selected>請選擇課程分類</option>
+                <?php foreach ($option_cat as $o): ?>
+                  <option <?= $o['category'] == $r_cat['category'] ? 'selected' : '' ?>>
+                    <?= $o['category'] ?>
+                  </option>
+                <?php endforeach ?>
+              </select>
+              <div class="form-text"></div>
             </div>
-            <?php endforeach ?>
-          
+          <?php endforeach ?>
+
 
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
           </div>
-          <div class="time-box border border-secondary">
-          <?php foreach ($rows_t as $rt): ?>
-            <div class="form-floating">
-              <label for="day_of_week">上課星期</label>
-              <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
-                <option <?= $rt['day_of_week'] == '星期一' ?'selected' : '' ?>>星期一</option>
-                <option <?= $rt['day_of_week']=='星期二' ?'selected' : '' ?>>星期二</option>
-                <option <?= $rt['day_of_week']=='星期三' ?'selected' : '' ?>>星期三</option>
-                <option <?= $rt['day_of_week']=='星期四' ?'selected' : '' ?>>星期四</option>
-                <option <?= $rt['day_of_week']=='星期五' ?'selected' : '' ?>>星期五</option>
-                <option <?= $rt['day_of_week']=='星期六' ?'selected' : '' ?>>星期六</option>
-                <option <?= $rt['day_of_week']=='星期日' ?'selected' : '' ?>>星期日</option>
-              </select>
-            </div>
+          <?php foreach ($rows_t as $index => $rt): ?>
+          <div class="time-box border border-secondary">           
+              <div class="form-floating">
+                <label for="day_of_week">上課星期</label>
+                <?php if ($index > 0): ?>
+                  <button type="button" class="btn btn-danger" onclick="removeTime(event)">刪除時間</button>
+                <?php endif ?>
+                <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
+                  <option <?= $rt['day_of_week'] == '星期一' ? 'selected' : '' ?>>星期一</option>
+                  <option <?= $rt['day_of_week'] == '星期二' ? 'selected' : '' ?>>星期二</option>
+                  <option <?= $rt['day_of_week'] == '星期三' ? 'selected' : '' ?>>星期三</option>
+                  <option <?= $rt['day_of_week'] == '星期四' ? 'selected' : '' ?>>星期四</option>
+                  <option <?= $rt['day_of_week'] == '星期五' ? 'selected' : '' ?>>星期五</option>
+                  <option <?= $rt['day_of_week'] == '星期六' ? 'selected' : '' ?>>星期六</option>
+                  <option <?= $rt['day_of_week'] == '星期日' ? 'selected' : '' ?>>星期日</option>
+                </select>
+              </div>
 
-            <div class="mb-3">
-              <label for="time_period" class="form-label">上課時間</label>
-              <input type="time" class="form-control" id="time_period" name="time_period[]" value=<?= $rt['time_period'] ?>>
-              <div class="form-text"></div>
-            </div>
-            <?php endforeach ?>
+              <div class="mb-3">
+                <label for="time_period" class="form-label">上課時間</label>
+                <input type="time" class="form-control" id="time_period" name="time_period[]" value=<?= $rt['time_period'] ?>>
+                <div class="form-text"></div>
+              </div>            
           </div>
+          <?php endforeach ?>
           <div class="mb-3">
             <label for="course_description" class="form-label">課程描述</label>
             <textarea class="form-control" name="course_description" id="course_description" cols="30"
@@ -145,9 +150,9 @@ $option_cat = $stmt_cat->fetchAll();
           </div>
           <div class="form-floating">
             <label for="is_published">上架狀態</label>
-            <select class="form-select form-control" id="is_published" name="is_published" >
-              <option <?= ($row['is_published'] =='上架')?'selected':'' ?>>上架</option>
-              <option <?= ($row['is_published'] =='未上架')?'selected':'' ?>>未上架</option>
+            <select class="form-select form-control" id="is_published" name="is_published">
+              <option <?= ($row['is_published'] == '上架') ? 'selected' : '' ?>>上架</option>
+              <option <?= ($row['is_published'] == '未上架') ? 'selected' : '' ?>>未上架</option>
             </select>
           </div>
 
@@ -184,7 +189,7 @@ $option_cat = $stmt_cat->fetchAll();
   const category_in = document.form1.category;
   const time_in = document.form1.time_period;
   const description_in = document.form1.course_description;
-  const fields = [course_name_in, member_name_in, category_in,time_in,description_in];
+  const fields = [course_name_in, member_name_in, category_in, time_in, description_in];
 
 
   function sendData(e) {
@@ -288,9 +293,9 @@ $option_cat = $stmt_cat->fetchAll();
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                            <option>
-                              <?= $o['category'] ?>
-                            </option>
+                                <option>
+                                  <?= $o['category'] ?>
+                                </option>
               <?php endforeach ?>
             </select>
           </div>`
