@@ -3,8 +3,35 @@ require './parts/connect_db.php';
 $pageName = 'course_list';
 $title = '課程管理列表';
 
+$perPage = 15; # 一頁最多20筆
 
-$sql = "SELECT 
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+if ($page < 1) {
+  header('Location: ?page=1'); #頁面轉向
+  exit; # 直接結束這支 php
+}
+
+$t_sql = "SELECT COUNT(1) FROM course";
+# 總筆數
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
+
+# 預設值
+$totalPages = 0;
+$rows = [];
+
+// 有資料時
+if ($totalRows > 0) {
+  # 總頁數
+  $totalPages = ceil($totalRows / $perPage); # 無條件進位，不足20筆也算一頁
+  if ($page > $totalPages) {
+    header('Location: ?page=' . $totalPages); #頁面轉向最後一頁
+    exit;
+  }
+}
+;
+
+
+$sql =sprintf( "SELECT 
 c.course_id, 
 c.course_name, 
 c.course_description, 
@@ -21,8 +48,10 @@ INNER JOIN category cat ON ccr.category_id = cat.category_id
 INNER JOIN coach co ON c.coach_id = co.coach_id
 INNER JOIN member m ON co.member_id = m.member_id
 GROUP BY c.course_id
-ORDER BY c.course_id DESC"
-;
+ORDER BY c.course_id DESC limit %s,%s",
+($page - 1) * $perPage,
+$perPage
+);
 $rows = $pdo->query($sql)->fetchAll();
 
 $sql_t = "SELECT 
@@ -52,7 +81,36 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
 </style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
+  <div class="row">
+    <div class="col">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
+            <a class="page-link" href="?page=1">
+              <i class="fa-solid fa-angles-left"></i>
+            </a>
+          </li>
+          <?php for ($i = $page - 3; $i <= $page + 3; $i++):
+            if ($i >= 1 and $i <= $totalPages): ?>
+              <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                <a class="page-link" href="?page=<?= $i ?>">
+                  <?= $i ?>
+                </a>
+              </li>
+              <?php
+            endif;
+          endfor; ?>
+          <li class="page-item <?= $page == $totalPages ? 'disabled' : '' ?>">
+            <a class="page-link" href="?page=<?= $totalPages ?>">
+              <i class="fa-solid fa-angles-right"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div>
+    <?= "總共 $totalRows 筆/總共$totalPages 頁" ?>
+  </div>
   <div class="row">
     <div class="col">
       <table class="table table-bordered table-striped">
@@ -78,7 +136,7 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
         <tbody>
           <?php foreach ($rows as $r): ?>
             <tr>
-            <td><a href="javascript: deleteItem(<?= $r['course_id'] ?>)">
+              <td><a href="javascript: deleteItem(<?= $r['course_id'] ?>)">
                   <i class="fa-solid fa-trash-can"></i>
                 </a></td>
               <td>
@@ -93,7 +151,7 @@ $rows_cat = $pdo->query($sql_cat)->fetchAll();
               <td>
                 <?= $r['member_name'] ?>
               </td>
-              
+
               <td>
                 <?= $r['is_published'] ?>
               </td>

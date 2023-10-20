@@ -193,6 +193,10 @@ $option_cat = $stmt_cat->fetchAll();
         console.log({
           data
         });
+        if (data.success) {
+          alert('資料新增成功');
+          //location.href = "./list.php"
+        }
       })
       .catch(ex => console.log(ex));
   }
