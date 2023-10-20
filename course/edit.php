@@ -31,9 +31,15 @@ $row = $pdo->query($sql)->fetch();
 $pageName = 'course_edit';
 $title = '課程編輯';
 
-$sql_cat = 'SELECT category FROM category ORDER BY category_id';
-$stmt_cat = $pdo->query($sql_cat);
-$option_cat = $stmt_cat->fetchAll();
+$sql_t = "SELECT 
+ct.time_period, 
+ct.day_of_week,
+ct.course_id
+FROM course_time ct
+where course_id={$course_id}
+ORDER BY ct.course_id";
+$rows_t = $pdo->query($sql_t)->fetchAll();
+print_r($rows_t);
 ?>
 
 <?php include './parts/html-head.php' ?>
@@ -98,16 +104,17 @@ $option_cat = $stmt_cat->fetchAll();
             <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
           </div>
           <div class="time-box border border-secondary">
+          <?php foreach ($rows_t as $rt): ?>
             <div class="form-floating">
               <label for="day_of_week">上課星期</label>
               <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
-                <option selected>星期一</option>
-                <option>星期二</option>
-                <option>星期三</option>
-                <option>星期四</option>
-                <option>星期五</option>
-                <option>星期六</option>
-                <option>星期日</option>
+                <option <?= $rt['day_of_week'] == '星期一' ?'selected' : '' ?>>星期一</option>
+                <option <?= $rt['day_of_week']=='星期二' ?'selected' : '' ?>>星期二</option>
+                <option <?= $rt['day_of_week']=='星期三' ?'selected' : '' ?>>星期三</option>
+                <option <?= $rt['day_of_week']=='星期四' ?'selected' : '' ?>>星期四</option>
+                <option <?= $rt['day_of_week']=='星期五' ?'selected' : '' ?>>星期五</option>
+                <option <?= $rt['day_of_week']=='星期六' ?'selected' : '' ?>>星期六</option>
+                <option <?= $rt['day_of_week']=='星期日' ?'selected' : '' ?>>星期日</option>
               </select>
             </div>
 
@@ -116,6 +123,7 @@ $option_cat = $stmt_cat->fetchAll();
               <input type="time" class="form-control" id="time_period" name="time_period[]">
               <div class="form-text"></div>
             </div>
+            <?php endforeach ?>
           </div>
           <div class="mb-3">
             <label for="course_description" class="form-label">課程描述</label>

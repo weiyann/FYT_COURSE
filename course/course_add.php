@@ -3,7 +3,7 @@ require './parts/connect_db.php';
 $pageName = 'course_add';
 $title = '課程新增';
 
-$sql_cat = 'SELECT category FROM category ORDER BY category_id';
+$sql_cat = 'SELECT * FROM category ORDER BY category_id';
 $stmt_cat = $pdo->query($sql_cat);
 $option_cat = $stmt_cat->fetchAll();
 ?>
@@ -58,7 +58,7 @@ $option_cat = $stmt_cat->fetchAll();
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                <option>
+                <option value="<?= $o['category_id'] ?>">
                   <?= $o['category'] ?>
                 </option>
               <?php endforeach ?>
@@ -148,7 +148,7 @@ $option_cat = $stmt_cat->fetchAll();
 
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
-
+    console.log('eddie',time_in)
     // 外觀要回復原來的狀態
     fields.forEach(field => {
       field.style.border = '1px solid #ccc';
@@ -201,6 +201,8 @@ $option_cat = $stmt_cat->fetchAll();
         if (data.success) {
           alert('資料新增成功');
           //location.href = "./list.php"
+        }else{
+          alert('錯誤')
         }
       })
       .catch(ex => console.log(ex));
@@ -248,9 +250,9 @@ $option_cat = $stmt_cat->fetchAll();
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                          <option>
-                            <?= $o['category'] ?>
-                          </option>
+                <option value="<?= $o['category_id'] ?>">
+                  <?= $o['category'] ?>
+                </option>
               <?php endforeach ?>
             </select>
           </div>`
