@@ -171,13 +171,17 @@ $option_cat = $stmt_cat->fetchAll();
   const category_in = document.form1.category;
   const time_in = document.form1.time_period;
   const description_in = document.form1.course_description;
+  const fields = [course_name_in, member_name_in, category_in,time_in,description_in];
 
 
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
 
     // 外觀要回復原來的狀態
-
+    fields.forEach(field => {
+      field.style.border = '1px solid #ccc';
+      field.nextElementSibling.innerHTML = '';
+    })
     // TODO: 資料在送出之前, 要檢查格式
     let isPass = true;
 
