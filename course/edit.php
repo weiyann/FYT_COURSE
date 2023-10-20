@@ -46,7 +46,6 @@ INNER JOIN course_category_relation ccr ON cat.category_id = ccr.category_id
 where course_id={$course_id}
 ORDER BY ccr.course_id";
 $rows_cat = $pdo->query($sql_cat)->fetchAll();
-print_r($rows_cat);
 
 $sql_cat2 = 'SELECT * FROM category ORDER BY category_id';
 $stmt_cat = $pdo->query($sql_cat2);
@@ -92,11 +91,14 @@ $option_cat = $stmt_cat->fetchAll();
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
           </div>
-         
-          <div class="form-floating cat-box">
-         
-            <label for="category">課程分類</label>
-            <?php foreach ($rows_cat as $r_cat):?>
+
+          <div>課程分類</div>
+          <?php foreach ($rows_cat as $index => $r_cat):?>
+          <div class="form-floating cat-box">       
+            <label for="category"></label>
+           <?php if($index>0):?>
+            <div class="btn btn-danger" onclick="removeCat(event)" >刪除分類</div>
+            <?php endif ?>
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
@@ -106,8 +108,9 @@ $option_cat = $stmt_cat->fetchAll();
               <?php endforeach ?>
             </select>
             <div class="form-text"></div>
+            </div>
             <?php endforeach ?>
-          </div>
+          
 
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
@@ -281,7 +284,7 @@ $option_cat = $stmt_cat->fetchAll();
   const catTpl = () => {
     return `<div class="form-floating cat-box">
             <label for="category">
-            <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label></label>
+            <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label>
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
@@ -296,7 +299,7 @@ $option_cat = $stmt_cat->fetchAll();
     cat_box.append(catTpl())
   }
   function removeCat(e) {
-    const $el = $(e.target);
+    const $el = $(e.currentTarget);
     $el.closest('.cat-box').remove();
   }
 

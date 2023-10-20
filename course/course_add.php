@@ -53,8 +53,9 @@ $option_cat = $stmt_cat->fetchAll();
           <div class="mb-3">
             <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
           </div>
+          <div>課程分類</div>
           <div class="form-floating cat-box">
-            <label for="category">課程分類</label>
+            <label for="category"></label>
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
@@ -246,7 +247,7 @@ $option_cat = $stmt_cat->fetchAll();
   const catTpl = () => {
     return `<div class="form-floating cat-box">
             <label for="category">
-            <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label></label>
+            <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label>
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
