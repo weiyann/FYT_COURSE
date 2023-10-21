@@ -3,6 +3,9 @@ require './parts/connect_db.php';
 $pageName = 'course_add';
 $title = '課程新增';
 
+$sql_coa='SELECT member_name FROM coach join member on coach.member_id = member.member_id';
+$option_coa = $pdo->query($sql_coa)->fetchAll();
+
 $sql_cat = 'SELECT * FROM category ORDER BY category_id';
 $stmt_cat = $pdo->query($sql_cat);
 $option_cat = $stmt_cat->fetchAll();
@@ -39,8 +42,18 @@ $option_cat = $stmt_cat->fetchAll();
           </div>
 
           <div class="mb-3">
-            <label for="member_name" class="form-label">教練姓名</label>
-            <input type="text" class="form-control" id="member_name" name="member_name">
+            <div class="form-floating">
+            <label for="member_name">教練姓名</label>
+            <select class="form-select form-control" id="member_name" name="member_name">
+              <option selected>請選擇教練姓名</option>
+              <?php foreach ($option_coa as $o_coa): ?>
+                <option value="<?= $o_coa['member_name'] ?>">
+                  <?= $o_coa['member_name'] ?>
+                </option>
+              <?php endforeach ?>
+            </select>
+            <div class="form-text"></div>
+          </div>
             <div class="form-text"></div>
           </div>
           <!--
@@ -165,10 +178,10 @@ $option_cat = $stmt_cat->fetchAll();
       course_name_in.style.border = '2px solid red';
       course_name_in.nextElementSibling.innerHTML = '請填寫正確的課程名稱'
     }
-    if (member_name_in.value < 1) {
+    if (member_name_in.value == '請選擇教練姓名') {
       isPass = false;
       member_name_in.style.border = '2px solid red';
-      member_name_in.nextElementSibling.innerHTML = '請填寫正確的教練姓名'
+      member_name_in.nextElementSibling.innerHTML = '請選擇正確的教練姓名'
     }
     if (category_in.value == '請選擇課程分類') {
       isPass = false;
