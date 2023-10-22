@@ -100,19 +100,19 @@ $rows = $pdo->query($sql)->fetchAll();
                 <?= $r['gym_id'] ?>
               </td>
               <td>
-                <?= $r['gym_name'] ?>
+                <?=htmlentities($r['gym_name']) ?>
               </td>
               <td>
                 <?= $r['gym_photo'] ?>
               </td>
               <td>
-                <?= $r['gym_description'] ?>
+                <?=htmlentities($r['gym_description']) ?>
               </td>
               <td>
                 <?= $r['business_time'] ?>
               </td>
               <td>
-                <?= $r['district_name'] . $r['gym_address'] ?>
+                <?= $r['district_name'] . htmlentities($r['gym_address']) ?>
               </td>
               <td>
                 <?= $r['created_at'] ?>

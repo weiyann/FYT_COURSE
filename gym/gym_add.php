@@ -106,7 +106,10 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       .then(data => {
         console.log({
           data
-        });
+        });if (data.success) {
+          alert('資料新增成功');
+          //location.href = "./gym_list.php"
+        }
       })
       .catch(ex => console.log(ex))
   }
