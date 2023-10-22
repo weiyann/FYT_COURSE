@@ -185,7 +185,9 @@ $option_d = $pdo->query($sql_d)->fetchAll();
           data
         });if (data.success) {
           alert('資料編輯成功');
-          //location.href = "./gym_list.php"
+          location.href = "./gym_list.php"
+        }else{
+          alert('資料沒有修改')
         }
       })
       .catch(ex => console.log(ex))

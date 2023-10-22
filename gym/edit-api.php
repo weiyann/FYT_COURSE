@@ -22,11 +22,11 @@ header('Content-Type: application/json');
 
 $sql = sprintf("UPDATE gym 
 SET
-'gym_name'=?,
-'gym_address'=?,
-'business_time'=?,
-'gym_description'=?,
-'district_id'=?
+gym_name=?,
+gym_address=?,
+business_time=?,
+gym_description=?,
+district_id=?
 where gym_id=?");
 
 $gym_name = $_POST['gym_name'] ?? '';
