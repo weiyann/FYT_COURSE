@@ -10,7 +10,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>
 <style>
-  form .form-text{
+  form .form-text {
     color: red;
   }
 </style>
@@ -37,8 +37,8 @@ $option_d = $pdo->query($sql_d)->fetchAll();
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
-            <div>地址</div>
-              <div class="input-group mb-2">               
+              <div>地址</div>
+              <div class="input-group mb-2">
                 <label for="district_id"></label>
                 <select class="form-select form-control" id="district_name" name="district_id" style="width:140px">
                   <option>--請選擇縣市--</option>
@@ -50,32 +50,25 @@ $option_d = $pdo->query($sql_d)->fetchAll();
                 </select>
                 <span class="input-group-text">縣/市</span>
                 <label for="gym_address" class="form-label"></label>
-                <input type="text" class="form-control w-50" id="gym_address" name="gym_address" placeholder="請輸入地址">                
+                <input type="text" class="form-control w-50" id="gym_address" name="gym_address" placeholder="請輸入地址">
               </div>
               <div class="form-text">
-                  <div class="district-text"></div>
-                  <div class="address-text"></div>
-                </div>
-              <!--
-              <div class="form-floating">
-                <label for="district_name">地址</label>
-                <select class="form-select form-control" id="district_name" name="district_name">
-                  <option>--請選擇縣市--</option>
-                  <?php foreach ($option_d as $o): ?>
-                    <option value="<?= $o['district_id'] ?>">
-                      <?= $o['district_name'] ?>
-                    </option>
-                  <?php endforeach ?>
-                </select>
-                <div class="form-text"></div><span>縣/市</span>
+                <div class="district-text"></div>
+                <div class="address-text"></div>
               </div>
-              <label for="gym_address" class="form-label"></label>
-              <input type="text" class="form-control" id="gym_address" name="gym_address">
-              <div class="form-text"></div>
-            </div>
-                  -->
-            <button type="submit" class="btn btn-primary">送出</button>
+
+
           </form>
+          <div style="cursor: pointer;" onclick="document.form2.photo.click()">點選上傳圖片</div>
+
+          <form name="form2">
+            <input type="file" name="photo" onchange="uploadFile()" hidden />
+          </form>
+
+          <div style="width: 300px">
+            <img src="" alt="" id="myimg" width="100%" />
+          </div>
+          <button type="submit" class="btn btn-primary">送出</button>
         </div>
       </div>
     </div>
@@ -105,12 +98,27 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 <?php include './parts/scripts.php' ?>
 
 <script>
-  const gym_name_in =document.form1.gym_name;
-  const gym_description_in =document.form1.gym_description;
-  const business_time_in =document.form1.business_time;
-  const district_id_in =document.form1.district_id;
-  const gym_address_in =document.form1.gym_address;
+  const gym_name_in = document.form1.gym_name;
+  const gym_description_in = document.form1.gym_description;
+  const business_time_in = document.form1.business_time;
+  const district_id_in = document.form1.district_id;
+  const gym_address_in = document.form1.gym_address;
   const fields = [gym_name_in, gym_description_in, business_time_in];
+
+  function uploadFile() {
+    const fd = new FormData(document.form2);
+
+    fetch("upload-img-api.php", {
+      method: "POST",
+      body: fd, // enctype="multipart/form-data"
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) {
+          myimg.src = "/FYT-course版型/uploads/" + data.file;
+        }
+      });
+  }
 
 
   function sendData(e) {
@@ -127,7 +135,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
     $('.address-text').text('');
 
     // TODO: 資料在送出之前, 要檢查格式
-    
+
     let isPass = true; // 有沒有通過檢查
 
     if (gym_name_in.value < 1) {
@@ -161,13 +169,13 @@ $option_d = $pdo->query($sql_d)->fetchAll();
     }
     const fd = new FormData(document.form1);
     fetch('gym_add-api.php', {
-        method: 'POST',
-        body: fd, // 送出的格式會自動是 multipart/form-data
-      }).then(r => r.json())
+      method: 'POST',
+      body: fd, // 送出的格式會自動是 multipart/form-data
+    }).then(r => r.json())
       .then(data => {
         console.log({
           data
-        });if (data.success) {
+        }); if (data.success) {
           alert('資料新增成功');
           //location.href = "./gym_list.php"
         }
