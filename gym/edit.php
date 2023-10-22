@@ -36,19 +36,20 @@ $option_d = $pdo->query($sql_d)->fetchAll();
         <div class="card-body">
           <h5 class="card-title">編輯健身房資料</h5>
           <form name="form1" onsubmit="sendData(event)">
+          <input type="hidden" name="gym_id" value="<?= $row['gym_id'] ?>">
             <div class="mb-3">
               <label for="gym_name" class="form-label">健身房名稱</label>
-              <input type="text" class="form-control" id="gym_name" name="gym_name">
+              <input type="text" class="form-control" id="gym_name" name="gym_name" value=<?= htmlentities($row['gym_name']) ?>>
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
               <label for="gym_description" class="form-label">介紹</label>
-              <textarea class="form-control" name="gym_description" id="gym_description" cols="30" rows="5"></textarea>
+              <textarea class="form-control" name="gym_description" id="gym_description" cols="30" rows="5"><?= htmlentities($row['gym_description']) ?></textarea>
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
               <label for="business_time" class="form-label">營業時間</label>
-              <input type="text" class="form-control" id="business_time" name="business_time">
+              <input type="text" class="form-control" id="business_time" name="business_time" value=<?= htmlentities($row['business_time']) ?>>
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
@@ -58,14 +59,14 @@ $option_d = $pdo->query($sql_d)->fetchAll();
                 <select class="form-select form-control" id="district_name" name="district_id" style="width:140px">
                   <option>--請選擇縣市--</option>
                   <?php foreach ($option_d as $o): ?>
-                    <option value="<?= $o['district_id'] ?>">
+                    <option <?= $o['district_id'] == $row['district_id'] ? 'selected' : '' ?> value="<?= $o['district_id'] ?>">
                       <?= $o['district_name'] ?>
                     </option>
                   <?php endforeach ?>
                 </select>
                 <span class="input-group-text">縣/市</span>
                 <label for="gym_address" class="form-label"></label>
-                <input type="text" class="form-control w-50" id="gym_address" name="gym_address" placeholder="請輸入地址">                
+                <input type="text" class="form-control w-50" id="gym_address" name="gym_address" placeholder="請輸入地址" value=<?= htmlentities($row['gym_address']) ?>>                
               </div>
               <div class="form-text">
                   <div class="district-text"></div>
@@ -89,7 +90,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
               <div class="form-text"></div>
             </div>
                   -->
-            <button type="submit" class="btn btn-primary">送出</button>
+            <button type="submit" class="btn btn-primary">修改</button>
           </form>
         </div>
       </div>
@@ -175,7 +176,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       return; // 沒有通過就不要發送資料
     }
     const fd = new FormData(document.form1);
-    fetch('gym_add-api.php', {
+    fetch('edit-api.php', {
         method: 'POST',
         body: fd, // 送出的格式會自動是 multipart/form-data
       }).then(r => r.json())
