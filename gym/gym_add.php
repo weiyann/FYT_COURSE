@@ -7,6 +7,11 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 <?php include './parts/html-head.php' ?>
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>
+<style>
+  form .form-text{
+    color: red;
+  }
+</style>
 <div class="container">
   <div class="row">
     <div class="col">
@@ -31,7 +36,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
             </div>
             <div class="mb-3">
             <div>地址</div>
-              <div class="input-group mb-3">               
+              <div class="input-group mb-2">               
                 <label for="district_id"></label>
                 <select class="form-select form-control" id="district_name" name="district_id" style="width:140px">
                   <option>--請選擇縣市--</option>
@@ -43,9 +48,12 @@ $option_d = $pdo->query($sql_d)->fetchAll();
                 </select>
                 <span class="input-group-text">縣/市</span>
                 <label for="gym_address" class="form-label"></label>
-                <input type="text" class="form-control w-75" id="gym_address" name="gym_address" placeholder="請輸入地址">
-                <div class="form-text"></div>
+                <input type="text" class="form-control w-50" id="gym_address" name="gym_address" placeholder="請輸入地址">                
               </div>
+              <div class="form-text">
+                  <div class="district-text"></div>
+                  <div class="address-text"></div>
+                </div>
               <!--
               <div class="form-floating">
                 <label for="district_name">地址</label>
@@ -95,9 +103,60 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 <?php include './parts/scripts.php' ?>
 
 <script>
+  const gym_name_in =document.form1.gym_name;
+  const gym_description_in =document.form1.gym_description;
+  const business_time_in =document.form1.business_time;
+  const district_id_in =document.form1.district_id;
+  const gym_address_in =document.form1.gym_address;
+  const fields = [gym_name_in, gym_description_in, business_time_in];
+
+
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
 
+    // 外觀要回復原來的狀態
+    fields.forEach(field => {
+      field.style.border = '1px solid #CCCCCC';
+      field.nextElementSibling.innerHTML = '';
+    })
+    district_id_in.style.border = '1px solid #CCCCCC';
+    $('.district-text').text('');
+    gym_address_in.style.border = '1px solid #CCCCCC';
+    $('.address-text').text('');
+
+    // TODO: 資料在送出之前, 要檢查格式
+    
+    let isPass = true; // 有沒有通過檢查
+
+    if (gym_name_in.value < 1) {
+      isPass = false;
+      gym_name_in.style.border = '2px solid red';
+      gym_name_in.nextElementSibling.innerHTML = '請填寫正確的健身房名稱'
+    }
+    if (gym_description_in.value < 1) {
+      isPass = false;
+      gym_description_in.style.border = '2px solid red';
+      gym_description_in.nextElementSibling.innerHTML = '請填寫正確的介紹'
+    }
+    if (business_time_in.value < 1) {
+      isPass = false;
+      business_time_in.style.border = '2px solid red';
+      business_time_in.nextElementSibling.innerHTML = '請填寫正確的營業時間'
+    }
+    if (district_id_in.value == '--請選擇縣市--') {
+      isPass = false;
+      district_id_in.style.border = '2px solid red';
+      $('.district-text').text('請選擇縣市');
+    }
+    if (gym_address_in.value < 1) {
+      isPass = false;
+      gym_address_in.style.border = '2px solid red';
+      $('.address-text').text('請輸入地址');
+    }
+
+    if (!isPass) {
+      return; // 沒有通過就不要發送資料
+    }
     const fd = new FormData(document.form1);
     fetch('gym_add-api.php', {
         method: 'POST',
