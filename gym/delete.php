@@ -5,4 +5,8 @@ if(! empty($gym_id)){
   $sql = "DELETE FROM gym WHERE gym_id={$gym_id}";
   $pdo->query($sql);
 }
-header('Location: gym_list.php');
+$come_from = 'gym_list.php';
+if(! empty($_SERVER['HTTP_REFERER'])){
+  $come_from = $_SERVER['HTTP_REFERER'];
+}
+header("Location: $come_from");

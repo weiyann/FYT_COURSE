@@ -94,7 +94,7 @@ $rows = $pdo->query($sql)->fetchAll();
           <?php foreach ($rows as $r): ?>
             <tr>
               <td><a href="javascript: deleteItem(<?= $r['gym_id'] ?>)">
-                  <i class="fa-solid fa-trash-can"></i>
+                  <i class="fa-solid fa-trash-can text-danger"></i>
                 </a></td>
               <td>
                 <?= $r['gym_id'] ?>
