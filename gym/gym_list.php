@@ -153,5 +153,11 @@ $rows = $pdo->query($sql)->fetchAll();
 
 <?php include './parts/scripts.php' ?>
 
-
+<script>
+  function deleteItem(gym_id) {
+    if (confirm(`確定要刪除編號為 ${gym_id} 的資料嗎?`)) {
+      location.href = 'delete.php?gym_id=' + gym_id;
+    }
+  }
+</script>
 <?php include './parts/html-foot.php' ?>
