@@ -1,5 +1,7 @@
 <?php
 require './parts/connect_db.php';
+$pageName = 'gym_add';
+$title = '新增健身房';
 
 $sql_d = 'SELECT * FROM district';
 $option_d = $pdo->query($sql_d)->fetchAll();
