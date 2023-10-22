@@ -3,7 +3,7 @@ require './parts/connect_db.php';
 $pageName = 'course_add';
 $title = '課程新增';
 
-$sql_coa='SELECT member_name FROM coach join member on coach.member_id = member.member_id';
+$sql_coa = 'SELECT member_name FROM coach join member on coach.member_id = member.member_id';
 $option_coa = $pdo->query($sql_coa)->fetchAll();
 
 $sql_cat = 'SELECT * FROM category ORDER BY category_id';
@@ -18,6 +18,10 @@ $option_cat = $stmt_cat->fetchAll();
   form .form-text {
     color: red;
   }
+
+  /* .cat-select{
+    border: 2px solid red;
+  } */
 </style>
 
 
@@ -43,17 +47,17 @@ $option_cat = $stmt_cat->fetchAll();
 
           <div class="mb-3">
             <div class="form-floating">
-            <label for="member_name">教練姓名</label>
-            <select class="form-select form-control" id="member_name" name="member_name">
-              <option selected>請選擇教練姓名</option>
-              <?php foreach ($option_coa as $o_coa): ?>
-                <option value="<?= $o_coa['member_name'] ?>">
-                  <?= $o_coa['member_name'] ?>
-                </option>
-              <?php endforeach ?>
-            </select>
-            <div class="form-text"></div>
-          </div>
+              <label for="member_name">教練姓名</label>
+              <select class="form-select form-control" id="member_name" name="member_name">
+                <option selected>請選擇教練姓名</option>
+                <?php foreach ($option_coa as $o_coa): ?>
+                  <option value="<?= $o_coa['member_name'] ?>">
+                    <?= $o_coa['member_name'] ?>
+                  </option>
+                <?php endforeach ?>
+              </select>
+              <div class="form-text"></div>
+            </div>
             <div class="form-text"></div>
           </div>
           <!--
@@ -63,44 +67,48 @@ $option_cat = $stmt_cat->fetchAll();
             <div class="form-text"></div>
           </div>
 -->
-          <div class="mb-3">
-            <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
-          </div>
-          <div>課程分類</div>
-          <div class="form-floating cat-box">
-            <label for="category"></label>
-            <select class="form-select form-control" id="category" name="category[]">
-              <option selected>請選擇課程分類</option>
-              <?php foreach ($option_cat as $o): ?>
-                <option value="<?= $o['category_id'] ?>">
-                  <?= $o['category'] ?>
-                </option>
-              <?php endforeach ?>
-            </select>
-            <div class="form-text"></div>
-          </div>
-
-          <div class="mb-3">
-            <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
-          </div>
-          <div class="time-box border border-secondary">
-            <div class="form-floating">
-              <label for="day_of_week">上課星期</label>
-              <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
-                <option selected>星期一</option>
-                <option>星期二</option>
-                <option>星期三</option>
-                <option>星期四</option>
-                <option>星期五</option>
-                <option>星期六</option>
-                <option>星期日</option>
-              </select>
-            </div>
-
+          <div class="cat-container">
+            <div>課程分類</div>
             <div class="mb-3">
-              <label for="time_period" class="form-label">上課時間</label>
-              <input type="time" class="form-control" id="time_period" name="time_period[]">
+              <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
+            </div>
+            <div class="form-floating cat-box">
+              <label for="category"></label>
+              <select class="form-select form-control cat-select" id="category" name="category[]">
+                <option selected>請選擇課程分類</option>
+                <?php foreach ($option_cat as $o): ?>
+                  <option value="<?= $o['category_id'] ?>">
+                    <?= $o['category'] ?>
+                  </option>
+                <?php endforeach ?>
+              </select>
               <div class="form-text"></div>
+            </div>
+          </div>
+
+          <div class="time-container">
+            <div class="mb-3">
+              <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
+            </div>
+            <div class="time-box border border-secondary">
+              <div class="form-floating">
+                <label for="day_of_week">上課星期</label>
+                <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
+                  <option selected>星期一</option>
+                  <option>星期二</option>
+                  <option>星期三</option>
+                  <option>星期四</option>
+                  <option>星期五</option>
+                  <option>星期六</option>
+                  <option>星期日</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="time_period" class="form-label">上課時間</label>
+                <input type="time" class="form-control" id="time_period" name="time_period[]">
+                <div class="form-text"></div>
+              </div>
             </div>
           </div>
           <div class="mb-3">
@@ -152,17 +160,18 @@ $option_cat = $stmt_cat->fetchAll();
 <?php include './parts/scripts.php' ?>
 
 <script>
-  const course_name_in = document.form1.course_name;
-  const member_name_in = document.form1.member_name;
-  const category_in = document.form1.category;
-  const time_in = document.form1.time_period;
-  const description_in = document.form1.course_description;
-  const fields = [course_name_in, member_name_in, category_in,time_in,description_in];
+const course_name_in = document.form1.course_name;
+    const member_name_in = document.form1.member_name;
+    const category_in = document.form1.category;
+    const time_in = document.form1.time_period;
+    const description_in = document.form1.course_description;
+    const fields = [course_name_in, member_name_in, category_in, time_in, description_in];
 
 
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
-    console.log('eddie',time_in)
+
+    
     // 外觀要回復原來的狀態
     fields.forEach(field => {
       field.style.border = '1px solid #ccc';
@@ -193,7 +202,7 @@ $option_cat = $stmt_cat->fetchAll();
       time_in.style.border = '2px solid red';
       time_in.nextElementSibling.innerHTML = '請選擇課程時間'
     }
-    if (description_in.value<1) {
+    if (description_in.value < 1) {
       isPass = false;
       description_in.style.border = '2px solid red';
       description_in.nextElementSibling.innerHTML = '請輸入課程描述'
@@ -215,15 +224,15 @@ $option_cat = $stmt_cat->fetchAll();
         if (data.success) {
           alert('資料新增成功');
           //location.href = "./course_list.php"
-        }else{
+        } else {
           alert('錯誤')
         }
       })
       .catch(ex => console.log(ex));
   }
 
-  const time_box = $('.time-box');
-  const cat_box = $('.cat-box');
+  const time_container = $('.time-container');
+  const cat_container = $('.cat-container');
 
   const timeTpl = () => {
     return `<div class="time-box border border-secondary">
@@ -250,7 +259,7 @@ $option_cat = $stmt_cat->fetchAll();
           </div>`
   }
   function addTime() {
-    time_box.append(timeTpl())
+    time_container.append(timeTpl())
   }
   function removeTime(e) {
     const $el = $(e.target);
@@ -261,18 +270,18 @@ $option_cat = $stmt_cat->fetchAll();
     return `<div class="form-floating cat-box">
             <label for="category">
             <button type="button" class="btn btn-danger" onclick="removeCat(event)">刪除分類</button></label>
-            <select class="form-select form-control" id="category" name="category[]">
+            <select class="form-select form-control cat-select" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                <option value="<?= $o['category_id'] ?>">
-                  <?= $o['category'] ?>
-                </option>
+                    <option value="<?= $o['category_id'] ?>">
+                      <?= $o['category'] ?>
+                    </option>
               <?php endforeach ?>
             </select>
           </div>`
   }
   function addCat() {
-    cat_box.append(catTpl())
+    cat_container.append(catTpl())
   }
   function removeCat(e) {
     const $el = $(e.target);

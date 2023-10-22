@@ -76,6 +76,7 @@ $option_cat = $stmt_cat->fetchAll();
         <h5 class="card-title">編輯課程資料</h5>
 
         <form name="form1" onsubmit="sendData(event)">
+        <input type="hidden" name="course_id" value="<?= $row['course_id'] ?>">
           <div class="mb-3">
             <label for="course_name" class="form-label">課程名稱</label>
             <input type="text" class="form-control" id="course_name" name="course_name"
@@ -89,59 +90,61 @@ $option_cat = $stmt_cat->fetchAll();
               value=<?= htmlentities($row['member_name']) ?>>
             <div class="form-text"></div>
           </div>
-
-          <div class="mb-3">
-            <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
-          </div>
-
-          <div>課程分類</div>
-          <?php foreach ($rows_cat as $index => $r_cat): ?>
-            <div class="form-floating cat-box">
-              <label for="category"></label>
-              <?php if ($index > 0): ?>
-                <div class="btn btn-danger" onclick="removeCat(event)">刪除分類</div>
-              <?php endif ?>
-              <select class="form-select form-control" id="category" name="category[]">
-                <option selected>請選擇課程分類</option>
-                <?php foreach ($option_cat as $o): ?>
-                  <option <?= $o['category'] == $r_cat['category'] ? 'selected' : '' ?>>
-                    <?= $o['category'] ?>
-                  </option>
-                <?php endforeach ?>
-              </select>
-              <div class="form-text"></div>
+          <div class="cat-container">
+            <div>課程分類</div>
+            <div class="mb-3">
+              <button type="button" class="btn btn-warning" onclick="addCat()">新增課程分類</button>
             </div>
-          <?php endforeach ?>
-
-
-          <div class="mb-3">
-            <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
-          </div>
-          <?php foreach ($rows_t as $index => $rt): ?>
-          <div class="time-box border border-secondary">           
-              <div class="form-floating">
-                <label for="day_of_week">上課星期</label>
+            <?php foreach ($rows_cat as $index => $r_cat): ?>
+              <div class="form-floating cat-box">
+                <label for="category"></label>
                 <?php if ($index > 0): ?>
-                  <button type="button" class="btn btn-danger" onclick="removeTime(event)">刪除時間</button>
+                  <div class="btn btn-danger" onclick="removeCat(event)">刪除分類</div>
                 <?php endif ?>
-                <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
-                  <option <?= $rt['day_of_week'] == '星期一' ? 'selected' : '' ?>>星期一</option>
-                  <option <?= $rt['day_of_week'] == '星期二' ? 'selected' : '' ?>>星期二</option>
-                  <option <?= $rt['day_of_week'] == '星期三' ? 'selected' : '' ?>>星期三</option>
-                  <option <?= $rt['day_of_week'] == '星期四' ? 'selected' : '' ?>>星期四</option>
-                  <option <?= $rt['day_of_week'] == '星期五' ? 'selected' : '' ?>>星期五</option>
-                  <option <?= $rt['day_of_week'] == '星期六' ? 'selected' : '' ?>>星期六</option>
-                  <option <?= $rt['day_of_week'] == '星期日' ? 'selected' : '' ?>>星期日</option>
+                <select class="form-select form-control" id="category" name="category[]">
+                  <option selected>請選擇課程分類</option>
+                  <?php foreach ($option_cat as $o): ?>
+                    <option <?= $o['category'] == $r_cat['category'] ? 'selected' : '' ?> value="<?= $o['category_id'] ?>">
+                      <?= $o['category'] ?>
+                    </option>
+                  <?php endforeach ?>
                 </select>
-              </div>
-
-              <div class="mb-3">
-                <label for="time_period" class="form-label">上課時間</label>
-                <input type="time" class="form-control" id="time_period" name="time_period[]" value=<?= $rt['time_period'] ?>>
                 <div class="form-text"></div>
-              </div>            
+              </div>
+            <?php endforeach ?>
           </div>
-          <?php endforeach ?>
+
+          <div class="time-container">
+            <div class="mb-3">
+              <button type="button" class="btn btn-warning" onclick="addTime()">新增時間</button>
+            </div>
+            <?php foreach ($rows_t as $index => $rt): ?>
+              <div class="time-box border border-secondary">
+                <div class="form-floating">
+                  <label for="day_of_week">上課星期</label>
+                  <?php if ($index > 0): ?>
+                    <button type="button" class="btn btn-danger" onclick="removeTime(event)">刪除時間</button>
+                  <?php endif ?>
+                  <select class="form-select form-control" id="day_of_week" name="day_of_week[]">
+                    <option <?= $rt['day_of_week'] == '星期一' ? 'selected' : '' ?>>星期一</option>
+                    <option <?= $rt['day_of_week'] == '星期二' ? 'selected' : '' ?>>星期二</option>
+                    <option <?= $rt['day_of_week'] == '星期三' ? 'selected' : '' ?>>星期三</option>
+                    <option <?= $rt['day_of_week'] == '星期四' ? 'selected' : '' ?>>星期四</option>
+                    <option <?= $rt['day_of_week'] == '星期五' ? 'selected' : '' ?>>星期五</option>
+                    <option <?= $rt['day_of_week'] == '星期六' ? 'selected' : '' ?>>星期六</option>
+                    <option <?= $rt['day_of_week'] == '星期日' ? 'selected' : '' ?>>星期日</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="time_period" class="form-label">上課時間</label>
+                  <input type="time" class="form-control" id="time_period" name="time_period[]"
+                    value=<?= $rt['time_period'] ?>>
+                  <div class="form-text"></div>
+                </div>
+              </div>
+            <?php endforeach ?>
+          </div>
           <div class="mb-3">
             <label for="course_description" class="form-label">課程描述</label>
             <textarea class="form-control" name="course_description" id="course_description" cols="30"
@@ -184,22 +187,25 @@ $option_cat = $stmt_cat->fetchAll();
 <?php include './parts/scripts.php' ?>
 
 <script>
-  const course_name_in = document.form1.course_name;
-  const member_name_in = document.form1.member_name;
-  const category_in = document.form1.category;
-  const time_in = document.form1.time_period;
-  const description_in = document.form1.course_description;
-  const fields = [course_name_in, member_name_in, category_in, time_in, description_in];
+
 
 
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
+    const course_name_in = document.form1.course_name;
+    const member_name_in = document.form1.member_name;
+    const category_in = document.form1.category;
+    const time_in = document.form1.time_period;
+    const description_in = document.form1.course_description;
+    const fields = [course_name_in, member_name_in, category_in, time_in, description_in];
 
     // 外觀要回復原來的狀態
+    /*
     fields.forEach(field => {
       field.style.border = '1px solid #ccc';
       field.nextElementSibling.innerHTML = '';
     })
+    */
     // TODO: 資料在送出之前, 要檢查格式
     let isPass = true;
 
@@ -235,7 +241,7 @@ $option_cat = $stmt_cat->fetchAll();
     }
     // 建立只有資料的表單
     const fd = new FormData(document.form1);
-    fetch('edit.php', {
+    fetch('edit-api.php', {
       method: 'POST',
       body: fd, // 送出的格式會自動是 multipart/form-data
     }).then(r => r.json())
@@ -246,13 +252,16 @@ $option_cat = $stmt_cat->fetchAll();
         if (data.success) {
           alert('資料編輯成功');
           //location.href = "./list.php"
+        }else {
+          alert('資料沒有修改')
+          
         }
       })
       .catch(ex => console.log(ex));
   }
 
-  const time_box = $('.time-box');
-  const cat_box = $('.cat-box');
+  const time_container = $('.time-container');
+  const cat_container = $('.cat-container');
 
   const timeTpl = () => {
     return `<div class="time-box border border-secondary">
@@ -279,7 +288,7 @@ $option_cat = $stmt_cat->fetchAll();
           </div>`
   }
   function addTime() {
-    time_box.append(timeTpl())
+    time_container.append(timeTpl())
   }
   function removeTime(e) {
     const $el = $(e.target);
@@ -293,15 +302,15 @@ $option_cat = $stmt_cat->fetchAll();
             <select class="form-select form-control" id="category" name="category[]">
               <option selected>請選擇課程分類</option>
               <?php foreach ($option_cat as $o): ?>
-                                <option>
-                                  <?= $o['category'] ?>
-                                </option>
+                                  <option>
+                                    <?= $o['category'] ?>
+                                  </option>
               <?php endforeach ?>
             </select>
           </div>`
   }
   function addCat() {
-    cat_box.append(catTpl())
+    cat_container.append(catTpl())
   }
   function removeCat(e) {
     const $el = $(e.currentTarget);
