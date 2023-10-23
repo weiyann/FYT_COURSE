@@ -56,24 +56,31 @@ $option_d = $pdo->query($sql_d)->fetchAll();
                 <div class="district-text"></div>
                 <div class="address-text"></div>
               </div>
+              <div class="mb-3">
+                <input class="form-control" id="gym_photo" name="gym_photo" hidden>
+                <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div>
+                <div class="form-text"></div>
+                <div style="width: 300px">
+                  <img src="" alt="" id="gym_photo_img" width="100%" />
+                </div>
+              </div>
 
 
           </form>
-          <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div>
+          <!-- <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div> -->
 
-          <form name="form2" hidden>
-            <input type="file" name="gym_photo" onchange="uploadFile()"  />
-          </form>
 
-          <div style="width: 300px">
-            <img src="" alt="" id="gym_photo_img" width="100%" />
-          </div>
+
+          
           <button type="submit" class="btn btn-primary">送出</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+<form name="form2" hidden>
+  <input type="file" name="gym_photosss" onchange="uploadFile()" />
+</form>
 
 <!-- End of Main Content -->
 
@@ -108,7 +115,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
   //let uploadFieldId;
   function triggerUpload(fid) {
     //uploadFieldId = fid;
-    document.form2.gym_photo.click();
+    document.form2.gym_photosss.click();
   }
 
   function uploadFile() {
@@ -121,9 +128,10 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       .then((r) => r.json())
       .then((data) => {
         if (data.success) {
-         
+          
+          document.form1.gym_photo.value=data.file
           gym_photo_img.src = "/FYT-course版型/uploads/" + data.file;
-            
+          
           /*if (uploadFieldId) {
             document.dataForm[uploadFieldId].value = data.file
             document.querySelector(`#${uploadFieldId}_img`).src = "/FYT-course版型/uploads/" + data.file;
