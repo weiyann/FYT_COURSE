@@ -41,7 +41,12 @@ $rows = $pdo->query($sql)->fetchAll();
 <?php include './parts/sidebar.php' ?>
 <?php include './parts/topbar.php' ?>
 
-
+<style>
+  .selected-row {
+    background-color: #ffaab4;
+    /* 更改为您希望的背景颜色 */
+  }
+</style>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -89,7 +94,7 @@ $rows = $pdo->query($sql)->fetchAll();
   </div>
   <div class="row">
     <div class="col">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th scope="col"></th>
@@ -191,6 +196,15 @@ $rows = $pdo->query($sql)->fetchAll();
     const selectedCount = selectedItems.length;
     const selectedCountSpan = document.getElementById('selectedCount');
     selectedCountSpan.textContent = selectedCount;
+
+    // 重置背景颜色
+    $('.selected-row').removeClass('selected-row');
+
+    // 遍历所有勾选的项目
+    selectedItems.forEach(item => {
+      // 找到包含勾选框的父元素，然后添加CSS类来更改背景颜色
+      $(item).closest('tr').addClass('selected-row');
+    });
   }
 
   // 调用updateSelectedCount以确保初始状态正确显示所选项目的数量
