@@ -46,6 +46,19 @@ $rows = $pdo->query($sql)->fetchAll();
 <div class="container-fluid">
   <div class="row">
     <div class="col">
+      <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+        id="search-form" name="search-form">
+        <div class="input-group">
+          <input type="text" id="search-field" name="search-field" class="form-control bg-light border-0 small"
+            placeholder="搜尋健身房名稱" aria-label="Search" aria-describedby="basic-addon2" />
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-search fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+  <div class="btn btn-danger" onclick="deleteMultiple(event)">刪除勾選的資料</div>
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
@@ -76,9 +89,11 @@ $rows = $pdo->query($sql)->fetchAll();
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
+          <th scope="col"></th>
             <th scope="col">
               <i class="fa-solid fa-trash-can"></i>
             </th>
+          
             <th scope="col">#</th>
             <th scope="col">健身房名稱</th>
             <th scope="col">圖片</th>
@@ -95,6 +110,11 @@ $rows = $pdo->query($sql)->fetchAll();
         <tbody>
           <?php foreach ($rows as $r): ?>
             <tr>
+
+              <td>
+                <input type="checkbox" name="selectedItems[]" value="<?= $r['gym_id'] ?>">
+              </td>
+
               <td><a href="javascript: deleteItem(<?= $r['gym_id'] ?>)">
                   <i class="fa-solid fa-trash-can text-danger"></i>
                 </a></td>
@@ -112,14 +132,14 @@ $rows = $pdo->query($sql)->fetchAll();
               <td>
                 <?= htmlentities($r['gym_description']) ?>
               </td>
-              
+
               <td>
                 <?= $r['begin_time'] ?>
               </td>
               <td>
                 <?= $r['end_time'] ?>
               </td>
-              
+
               <td>
                 <?= $r['district_name'] . htmlentities($r['gym_address']) ?>
               </td>
@@ -164,9 +184,25 @@ $rows = $pdo->query($sql)->fetchAll();
 
 <script>
   function deleteItem(gym_id) {
-    if (confirm(`確定要刪除編號為 ${gym_id} 的資料嗎?`)) {
+    if (confirm(`確定要刪除編號為 ${gym_id} 的資料嗎 ?`)) {
       location.href = 'delete.php?gym_id=' + gym_id;
     }
   }
+
+  function deleteMultiple(event) {
+
+  const selectedItems = document.querySelectorAll('input[name="selectedItems[]"]:checked');
+  //console.log("已选中的项目数量：", selectedItems.length);
+  if (selectedItems.length === 0) {
+    alert("請至少選擇一個項目進行刪除。");
+    return;
+  }
+
+  const selectedIds = Array.from(selectedItems).map(item => item.getAttribute("value"));
+  //console.log("已选中的项目的值：", selectedIds);
+  if (confirm(`確定要刪除編號為 ${selectedIds.join(', ')} 的資料嗎?`)) {
+    location.href = 'deletemultiple.php?gym_ids=' + selectedIds.join(',');
+  }
+}
 </script>
 <?php include './parts/html-foot.php' ?>
