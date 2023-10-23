@@ -72,24 +72,14 @@ $option_d = $pdo->query($sql_d)->fetchAll();
                   <div class="district-text"></div>
                   <div class="address-text"></div>
                 </div>
-              <!--
-              <div class="form-floating">
-                <label for="district_name">地址</label>
-                <select class="form-select form-control" id="district_name" name="district_name">
-                  <option>--請選擇縣市--</option>
-                  <?php foreach ($option_d as $o): ?>
-                    <option value="<?= $o['district_id'] ?>">
-                      <?= $o['district_name'] ?>
-                    </option>
-                  <?php endforeach ?>
-                </select>
-                <div class="form-text"></div><span>縣/市</span>
+                <div class="mb-3">
+                <input class="form-control" id="gym_photo" name="gym_photo" hidden>
+                <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div>
+                <div class="form-text"></div>
+                <div style="width: 300px">
+                  <img src=<?="/FYT-course版型/uploads/" . htmlentities($row['gym_photo'])?> alt="" id="gym_photo_img" width="100%" />
+                </div>
               </div>
-              <label for="gym_address" class="form-label"></label>
-              <input type="text" class="form-control" id="gym_address" name="gym_address">
-              <div class="form-text"></div>
-            </div>
-                  -->
             <button type="submit" class="btn btn-primary">修改</button>
           </form>
         </div>
@@ -97,7 +87,9 @@ $option_d = $pdo->query($sql_d)->fetchAll();
     </div>
   </div>
 </div>
-
+<form name="form2" hidden>
+  <input type="file" name="gym_photosss" onchange="uploadFile()" />
+</form>
 <!-- End of Main Content -->
 
 <!-- Footer -->
@@ -128,6 +120,31 @@ $option_d = $pdo->query($sql_d)->fetchAll();
   const gym_address_in =document.form1.gym_address;
   const fields = [gym_name_in, gym_description_in, business_time_in];
 
+  function triggerUpload(fid) {
+    document.form2.gym_photosss.click();
+  }
+
+  function uploadFile() {
+    const fd = new FormData(document.form2);
+
+    fetch("upload-img-api.php", {
+      method: "POST",
+      body: fd, // enctype="multipart/form-data"
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) {
+          
+          document.form1.gym_photo.value=data.file
+          gym_photo_img.src = "/FYT-course版型/uploads/" + data.file;
+          
+          /*if (uploadFieldId) {
+            document.dataForm[uploadFieldId].value = data.file
+            document.querySelector(`#${uploadFieldId}_img`).src = "/FYT-course版型/uploads/" + data.file;
+          }*/
+        }
+      });
+  }
 
   function sendData(e) {
     e.preventDefault(); // 不要讓表單以傳統的方式送出

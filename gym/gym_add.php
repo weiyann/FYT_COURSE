@@ -112,9 +112,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
   const gym_address_in = document.form1.gym_address;
   const fields = [gym_name_in, gym_description_in, business_time_in];
 
-  //let uploadFieldId;
   function triggerUpload(fid) {
-    //uploadFieldId = fid;
     document.form2.gym_photosss.click();
   }
 

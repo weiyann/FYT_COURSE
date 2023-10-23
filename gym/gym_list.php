@@ -31,8 +31,9 @@ if ($totalRows > 0) {
 $sql = sprintf('SELECT * FROM gym JOIN district on gym.district_id = district.district_id
  ORDER BY gym_id desc
  limit %s,%s',
- ($page - 1) * $perPage,
-$perPage);
+  ($page - 1) * $perPage,
+  $perPage
+);
 $rows = $pdo->query($sql)->fetchAll();
 ?>
 
@@ -100,13 +101,15 @@ $rows = $pdo->query($sql)->fetchAll();
                 <?= $r['gym_id'] ?>
               </td>
               <td>
-                <?=htmlentities($r['gym_name']) ?>
+                <?= htmlentities($r['gym_name']) ?>
               </td>
               <td>
-                <?= $r['gym_photo'] ?>
+                <div style="width:100px">
+                  <img src="<?= "/FYT-course版型/uploads/" . $r['gym_photo'] ?>" alt="" width='100%'>
+                </div>
               </td>
               <td>
-                <?=htmlentities($r['gym_description']) ?>
+                <?= htmlentities($r['gym_description']) ?>
               </td>
               <td>
                 <?= $r['business_time'] ?>
