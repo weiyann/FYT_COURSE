@@ -83,19 +83,20 @@ $rows = $pdo->query($sql)->fetchAll();
           </li>
         </ul>
       </nav>
-      <div class="btn btn-danger" onclick="deleteMultiple(event)">刪除勾選的資料</div>
+      <div class="btn btn-danger" onclick="deleteMultiple(event)"><i class="fa-solid fa-trash-can text-white"></i>
+        刪除勾選的資料<span id="selectedCount"></span>筆</div>
     </div>
   </div>
   <div class="row">
-    <div class="col" >
+    <div class="col">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-          <th scope="col"></th>
+            <th scope="col"></th>
             <th scope="col">
               <i class="fa-solid fa-trash-can"></i>
             </th>
-          
+
             <th scope="col">#</th>
             <th scope="col">健身房名稱</th>
             <th scope="col">圖片</th>
@@ -136,10 +137,10 @@ $rows = $pdo->query($sql)->fetchAll();
               </td>
 
               <td>
-                <?= substr($r['begin_time'],0,-3) .'~'. substr($r['end_time'],0,-3) ?>
+                <?= substr($r['begin_time'], 0, -3) . '~' . substr($r['end_time'], 0, -3) ?>
               </td>
               <!-- <td>
-                <?= substr($r['end_time'],0,-3) ?>
+                <?= substr($r['end_time'], 0, -3) ?>
               </td> -->
 
               <td>
@@ -185,6 +186,23 @@ $rows = $pdo->query($sql)->fetchAll();
 <?php include './parts/scripts.php' ?>
 
 <script>
+  function updateSelectedCount() {
+    const selectedItems = document.querySelectorAll('input[name="selectedItems[]"]:checked');
+    const selectedCount = selectedItems.length;
+    const selectedCountSpan = document.getElementById('selectedCount');
+    selectedCountSpan.textContent = selectedCount;
+  }
+
+  // 调用updateSelectedCount以确保初始状态正确显示所选项目的数量
+  updateSelectedCount();
+
+  // 监听checkbox勾选状态的变化
+  const checkboxes = document.querySelectorAll('input[name="selectedItems[]"]');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateSelectedCount);
+  });
+
+
   function deleteItem(gym_id) {
     if (confirm(`確定要刪除編號為 ${gym_id} 的資料嗎 ?`)) {
       location.href = 'delete.php?gym_id=' + gym_id;
@@ -193,18 +211,18 @@ $rows = $pdo->query($sql)->fetchAll();
 
   function deleteMultiple(event) {
 
-  const selectedItems = document.querySelectorAll('input[name="selectedItems[]"]:checked');
-  //console.log("已选中的项目数量：", selectedItems.length);
-  if (selectedItems.length === 0) {
-    alert("請至少選擇一個項目進行刪除。");
-    return;
-  }
+    const selectedItems = document.querySelectorAll('input[name="selectedItems[]"]:checked');
+    //console.log("已选中的项目数量：", selectedItems.length);
+    if (selectedItems.length === 0) {
+      alert("請至少選擇一個項目進行刪除。");
+      return;
+    }
 
-  const selectedIds = Array.from(selectedItems).map(item => item.getAttribute("value"));
-  //console.log("已选中的项目的值：", selectedIds);
-  if (confirm(`確定要刪除編號為 ${selectedIds.join(', ')} 的資料嗎?`)) {
-    location.href = 'deletemultiple.php?gym_ids=' + selectedIds.join(',');
+    const selectedIds = Array.from(selectedItems).map(item => item.getAttribute("value"));
+    //console.log("已选中的项目的值：", selectedIds);
+    if (confirm(`確定要刪除編號為 ${selectedIds.join(', ')} 的資料嗎?`)) {
+      location.href = 'deletemultiple.php?gym_ids=' + selectedIds.join(',');
+    }
   }
-}
 </script>
 <?php include './parts/html-foot.php' ?>
