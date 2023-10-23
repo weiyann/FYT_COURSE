@@ -11,13 +11,14 @@ $output = [
 header('Content-Type: application/json');
 
 
-$sql = sprintf("INSERT INTO `gym`( `gym_name`, `gym_address`, `business_time`, `gym_description`, `district_id`, `created_at`)
-VALUES (?,?,?,?,?,now())");
-$gym_name = $_POST['gym_name'] ?? '';
-$gym_address = $_POST['gym_address'] ?? '';
-$business_time = $_POST['business_time'] ?? '';
-$gym_description = $_POST['gym_description'] ?? '';
-$district_id = $_POST['district_id'] ?? '';
+$sql = sprintf("INSERT INTO `gym`( `gym_name`, `gym_address`, `business_time`, `gym_description`, `district_id`,`gym_photo`,`created_at`)
+VALUES (?,?,?,?,?,?,now())");
+$gym_name = $_POST['gym_name'] ?? null;
+$gym_address = $_POST['gym_address'] ?? null;
+$business_time = $_POST['business_time'] ?? null;
+$gym_description = $_POST['gym_description'] ?? null;
+$district_id = $_POST['district_id'] ?? null;
+$gym_photo= $_POST['gym_photo']??null;
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute(
@@ -27,6 +28,7 @@ $stmt->execute(
     $business_time,
     $gym_description,
     $district_id,
+    $gym_photo
   ]
 );
 $output['success'] = boolval($stmt->rowCount());

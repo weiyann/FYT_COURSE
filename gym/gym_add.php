@@ -59,14 +59,14 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 
 
           </form>
-          <div style="cursor: pointer;" onclick="document.form2.photo.click()">點選上傳圖片</div>
+          <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div>
 
-          <form name="form2">
-            <input type="file" name="photo" onchange="uploadFile()" hidden />
+          <form name="form2" hidden>
+            <input type="file" name="gym_photo" onchange="uploadFile()"  />
           </form>
 
           <div style="width: 300px">
-            <img src="" alt="" id="myimg" width="100%" />
+            <img src="" alt="" id="gym_photo_img" width="100%" />
           </div>
           <button type="submit" class="btn btn-primary">送出</button>
         </div>
@@ -105,6 +105,12 @@ $option_d = $pdo->query($sql_d)->fetchAll();
   const gym_address_in = document.form1.gym_address;
   const fields = [gym_name_in, gym_description_in, business_time_in];
 
+  //let uploadFieldId;
+  function triggerUpload(fid) {
+    //uploadFieldId = fid;
+    document.form2.gym_photo.click();
+  }
+
   function uploadFile() {
     const fd = new FormData(document.form2);
 
@@ -115,7 +121,13 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       .then((r) => r.json())
       .then((data) => {
         if (data.success) {
-          myimg.src = "/FYT-course版型/uploads/" + data.file;
+         
+          gym_photo_img.src = "/FYT-course版型/uploads/" + data.file;
+            
+          /*if (uploadFieldId) {
+            document.dataForm[uploadFieldId].value = data.file
+            document.querySelector(`#${uploadFieldId}_img`).src = "/FYT-course版型/uploads/" + data.file;
+          }*/
         }
       });
   }
