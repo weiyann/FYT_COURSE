@@ -83,7 +83,8 @@ $rows = $pdo->query($sql)->fetchAll();
             <th scope="col">健身房名稱</th>
             <th scope="col">圖片</th>
             <th scope="col">介紹</th>
-            <th scope="col">營業時間</th>
+            <th scope="col">開始營業時間</th>
+            <th scope="col">結束營業時間</th>
             <th scope="col">地址</th>
             <th scope="col">資料建立時間</th>
             <th scope="col">
@@ -111,9 +112,14 @@ $rows = $pdo->query($sql)->fetchAll();
               <td>
                 <?= htmlentities($r['gym_description']) ?>
               </td>
+              
               <td>
-                <?= $r['business_time'] ?>
+                <?= $r['begin_time'] ?>
               </td>
+              <td>
+                <?= $r['end_time'] ?>
+              </td>
+              
               <td>
                 <?= $r['district_name'] . htmlentities($r['gym_address']) ?>
               </td>

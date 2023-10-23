@@ -31,9 +31,19 @@ $option_d = $pdo->query($sql_d)->fetchAll();
               <textarea class="form-control" name="gym_description" id="gym_description" cols="30" rows="5"></textarea>
               <div class="form-text"></div>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="business_time" class="form-label">營業時間</label>
               <input type="text" class="form-control" id="business_time" name="business_time">
+              <div class="form-text"></div>
+            </div> -->
+            <div class="mb-3">
+              <label for="gym_description" class="form-label">開始時間</label>
+              <input type="time" class="form-control" id="begin_time" name="begin_time">
+              <div class="form-text"></div>
+            </div>
+            <div class="mb-3">
+              <label for="gym_description" class="form-label">結束時間</label>
+              <input type="time" class="form-control" id="end_time" name="end_time">
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
@@ -71,7 +81,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 
 
 
-          
+
           <button type="submit" class="btn btn-primary">送出</button>
         </div>
       </div>
@@ -107,10 +117,11 @@ $option_d = $pdo->query($sql_d)->fetchAll();
 <script>
   const gym_name_in = document.form1.gym_name;
   const gym_description_in = document.form1.gym_description;
-  const business_time_in = document.form1.business_time;
+  const begin_time_in = document.form1.begin_time;
+  const end_time_in = document.form1.end_time;
   const district_id_in = document.form1.district_id;
   const gym_address_in = document.form1.gym_address;
-  const fields = [gym_name_in, gym_description_in, business_time_in];
+  const fields = [gym_name_in, gym_description_in, begin_time_in, end_time_in];
 
   function triggerUpload(fid) {
     document.form2.gym_photosss.click();
@@ -126,10 +137,10 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       .then((r) => r.json())
       .then((data) => {
         if (data.success) {
-          
-          document.form1.gym_photo.value=data.file
+
+          document.form1.gym_photo.value = data.file
           gym_photo_img.src = "/FYT-course版型/uploads/" + data.file;
-          
+
           /*if (uploadFieldId) {
             document.dataForm[uploadFieldId].value = data.file
             document.querySelector(`#${uploadFieldId}_img`).src = "/FYT-course版型/uploads/" + data.file;
@@ -166,10 +177,20 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       gym_description_in.style.border = '2px solid red';
       gym_description_in.nextElementSibling.innerHTML = '請填寫正確的介紹'
     }
-    if (business_time_in.value < 1) {
+    // if (business_time_in.value < 1) {
+    //   isPass = false;
+    //   business_time_in.style.border = '2px solid red';
+    //   business_time_in.nextElementSibling.innerHTML = '請填寫正確的營業時間'
+    // }
+    if (!begin_time_in.value) {
       isPass = false;
-      business_time_in.style.border = '2px solid red';
-      business_time_in.nextElementSibling.innerHTML = '請填寫正確的營業時間'
+      begin_time_in.style.border = '2px solid red';
+      begin_time_in.nextElementSibling.innerHTML = '請填寫正確的時間'
+    }
+    if (!end_time_in.value) {
+      isPass = false;
+      end_time_in.style.border = '2px solid red';
+      end_time_in.nextElementSibling.innerHTML = '請填寫正確的時間'
     }
     if (district_id_in.value == '--請選擇縣市--') {
       isPass = false;
@@ -195,7 +216,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
           data
         }); if (data.success) {
           alert('資料新增成功');
-          //location.href = "./gym_list.php"
+          location.href = "./gym_list.php"
         }
       })
       .catch(ex => console.log(ex))
