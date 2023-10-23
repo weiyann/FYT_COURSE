@@ -192,6 +192,15 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       end_time_in.style.border = '2px solid red';
       end_time_in.nextElementSibling.innerHTML = '請填寫正確的時間'
     }
+    if (begin_time_in.value && end_time_in.value) {
+      const beginTime = new Date(`2000-01-01 ${begin_time_in.value}`);
+      const endTime = new Date(`2000-01-01 ${end_time_in.value}`);
+      if (endTime <= beginTime) {
+        isPass = false;
+        end_time_in.style.border = '2px solid red';
+        end_time_in.nextElementSibling.innerHTML = '結束時間必須大於開始時間';
+      }
+    }
     if (district_id_in.value == '--請選擇縣市--') {
       isPass = false;
       district_id_in.style.border = '2px solid red';

@@ -42,6 +42,7 @@ $rows = $pdo->query($sql)->fetchAll();
 <?php include './parts/topbar.php' ?>
 
 
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
   <div class="row">
@@ -58,7 +59,7 @@ $rows = $pdo->query($sql)->fetchAll();
           </div>
         </div>
       </form>
-  <div class="btn btn-danger" onclick="deleteMultiple(event)">刪除勾選的資料</div>
+
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
@@ -82,10 +83,11 @@ $rows = $pdo->query($sql)->fetchAll();
           </li>
         </ul>
       </nav>
+      <div class="btn btn-danger" onclick="deleteMultiple(event)">刪除勾選的資料</div>
     </div>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col" >
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
@@ -98,8 +100,8 @@ $rows = $pdo->query($sql)->fetchAll();
             <th scope="col">健身房名稱</th>
             <th scope="col">圖片</th>
             <th scope="col">介紹</th>
-            <th scope="col">開始營業時間</th>
-            <th scope="col">結束營業時間</th>
+            <th scope="col">營業時間</th>
+            <!-- <th scope="col">結束營業時間</th> -->
             <th scope="col">地址</th>
             <th scope="col">資料建立時間</th>
             <th scope="col">
@@ -129,22 +131,22 @@ $rows = $pdo->query($sql)->fetchAll();
                   <img src="<?= "/FYT-course版型/uploads/" . $r['gym_photo'] ?>" alt="" width='100%'>
                 </div>
               </td>
-              <td>
+              <td class="text-truncate" style="max-width:150px">
                 <?= htmlentities($r['gym_description']) ?>
               </td>
 
               <td>
-                <?= $r['begin_time'] ?>
+                <?= substr($r['begin_time'],0,-3) .'~'. substr($r['end_time'],0,-3) ?>
               </td>
-              <td>
-                <?= $r['end_time'] ?>
-              </td>
+              <!-- <td>
+                <?= substr($r['end_time'],0,-3) ?>
+              </td> -->
 
               <td>
                 <?= $r['district_name'] . htmlentities($r['gym_address']) ?>
               </td>
               <td>
-                <?= $r['created_at'] ?>
+                <?= substr($r['created_at'], 0, -3); ?>
               </td>
               <td><a href="edit.php?gym_id=<?= $r['gym_id'] ?>">
                   <i class="fa-solid fa-file-pen"></i>
