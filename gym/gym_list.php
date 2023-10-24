@@ -46,10 +46,12 @@ $rows = $pdo->query($sql)->fetchAll();
     background-color: #ffaab4;
     /* 更改为您希望的背景颜色 */
   }
+
 </style>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
+
   <div class="row">
     <div class="col">
       <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
@@ -90,6 +92,7 @@ $rows = $pdo->query($sql)->fetchAll();
       </nav>
       <div class="btn btn-danger" onclick="deleteMultiple(event)"><i class="fa-solid fa-trash-can text-white"></i>
         刪除勾選的資料<span id="selectedCount"></span>筆</div>
+      <div class="btn btn-primary" onclick="movetoadd(event)">新增健身房資料</div>
     </div>
   </div>
   <div class="row">
@@ -137,7 +140,7 @@ $rows = $pdo->query($sql)->fetchAll();
                   <img src="<?= "/FYT-course版型/uploads/" . $r['gym_photo'] ?>" alt="" width='100%'>
                 </div>
               </td>
-              <td class="text-truncate" style="max-width:150px">
+              <td class="text-truncate " style="max-width:200px">
                 <?= htmlentities($r['gym_description']) ?>
               </td>
 
@@ -237,6 +240,9 @@ $rows = $pdo->query($sql)->fetchAll();
     if (confirm(`確定要刪除編號為 ${selectedIds.join(', ')} 的資料嗎?`)) {
       location.href = 'deletemultiple.php?gym_ids=' + selectedIds.join(',');
     }
+  }
+  function movetoadd(e){
+    location.href = 'gym_add.php'
   }
 </script>
 <?php include './parts/html-foot.php' ?>
