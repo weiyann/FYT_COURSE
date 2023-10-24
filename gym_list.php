@@ -30,8 +30,8 @@ if (isset($_GET['text']) && $_GET['text'] !== "") {
       );
       $rows = $pdo->query($sql)->fetchAll();
   }
-}*/
-
+}
+*/
 
 
 $perPage = 10;
@@ -69,9 +69,8 @@ $rows = $pdo->query($sql)->fetchAll();
 ?>
 
 <?php include './parts/html-head.php' ?>
+<?php include './parts/navbar.php' ?>
 
-<?php include './parts/sidebar.php' ?>
-<?php include './parts/topbar.php' ?>
 
 
 <style>
@@ -283,7 +282,7 @@ $rows = $pdo->query($sql)->fetchAll();
 
   function deleteItem(gym_id) {
     if (confirm(`確定要刪除編號為 ${gym_id} 的資料嗎 ?`)) {
-      location.href = 'delete.php?gym_id=' + gym_id;
+      location.href = 'gym_delete.php?gym_id=' + gym_id;
     }
   }
 
@@ -299,7 +298,7 @@ $rows = $pdo->query($sql)->fetchAll();
     const selectedIds = Array.from(selectedItems).map(item => item.getAttribute("value"));
     //console.log("已选中的项目的值：", selectedIds);
     if (confirm(`確定要刪除編號為 ${selectedIds.join(', ')} 的資料嗎?`)) {
-      location.href = 'deletemultiple.php?gym_ids=' + selectedIds.join(',');
+      location.href = 'gym_deletemultiple.php?gym_ids=' + selectedIds.join(',');
     }
   }
   function movetoadd(e) {
@@ -372,13 +371,13 @@ $rows = $pdo->query($sql)->fetchAll();
         }
       })
   })
-  
+  /*
   let district_name = document.querySelector("#district_name");
         let search = document.querySelector("#search");
         search.addEventListener('click', function() {
             let districtVal = district_name.value;
             location.href = 'gym_list.php?text=' + districtVal;
         })
-        
+    */    
 </script>
 <?php include './parts/html-foot.php' ?>
