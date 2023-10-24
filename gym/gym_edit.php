@@ -213,7 +213,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
       return; // 沒有通過就不要發送資料
     }
     const fd = new FormData(document.form1);
-    fetch('edit-api.php', {
+    fetch('gym_edit-api.php', {
         method: 'POST',
         body: fd, // 送出的格式會自動是 multipart/form-data
       }).then(r => r.json())

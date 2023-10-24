@@ -157,7 +157,7 @@ $rows = $pdo->query($sql)->fetchAll();
               <td>
                 <?= substr($r['created_at'], 0, -3); ?>
               </td>
-              <td><a href="edit.php?gym_id=<?= $r['gym_id'] ?>">
+              <td><a href="gym_edit.php?gym_id=<?= $r['gym_id'] ?>">
                   <i class="fa-solid fa-file-pen"></i>
                 </a></td>
             </tr>
