@@ -1,2 +1,0 @@
-<?php
-require './parts/connect_db.php';

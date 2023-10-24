@@ -46,7 +46,6 @@ $rows = $pdo->query($sql)->fetchAll();
     background-color: #ffaab4;
     /* 更改为您希望的背景颜色 */
   }
-
 </style>
 
 <!-- Begin Page Content -->
@@ -97,7 +96,7 @@ $rows = $pdo->query($sql)->fetchAll();
   </div>
   <div class="row">
     <div class="col">
-      <table class="table table-bordered">
+      <table class="table table-bordered ">
         <thead>
           <tr>
             <th scope="col"></th>
@@ -118,7 +117,7 @@ $rows = $pdo->query($sql)->fetchAll();
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="originalTable">
           <?php foreach ($rows as $r): ?>
             <tr>
 
@@ -164,6 +163,7 @@ $rows = $pdo->query($sql)->fetchAll();
           <?php endforeach ?>
         </tbody>
       </table>
+      <table id="resultTable"></table>
     </div>
   </div>
 
@@ -241,8 +241,75 @@ $rows = $pdo->query($sql)->fetchAll();
       location.href = 'deletemultiple.php?gym_ids=' + selectedIds.join(',');
     }
   }
-  function movetoadd(e){
+  function movetoadd(e) {
     location.href = 'gym_add.php'
   }
+
+
+  const searchForm = document.querySelector("#search-form");
+
+  searchForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const searchStr = document.querySelector("#search-field").value;
+    const fd = new FormData(searchForm);
+
+    fetch('gym-search-api.php', {
+      method: 'POST',
+      body: fd,
+    })
+      .then(r => r.json())
+      .then(data => {
+        originalTable.innerHTML = '';
+
+        if (data.length > 0) {
+          data.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>
+                <input type="checkbox" name="selectedItems[]" value=" ${item.gym_id} ">
+              </td>
+
+              <td><a href="javascript: deleteItem(${item.gym_id})">
+                  <i class="fa-solid fa-trash-can text-danger"></i>
+                </a></td>
+              <td>
+              ${item.gym_id}
+              </td>
+              <td>
+              ${item.gym_name}
+              </td>
+              <td>
+                <div style="width:100px">
+                  <img src= "/FYT-course版型/uploads/${item.gym_photo}" alt="" width='100%'>
+                </div>
+              </td>
+              <td class="text-truncate " style="max-width:200px">
+              ${item.gym_description}
+              </td>
+
+              <td>
+              ${item.begin_time.slice(0, -3)} ~ ${item.end_time.slice(0, -3)}
+              </td>
+
+              <td>
+              ${item.district_name} ${item.gym_address}
+              </td>
+              <td>
+              ${item.created_at.slice(0, -3)}
+              </td>
+              <td>
+                <a href="gym_edit.php?gym_id=${item.gym_id}">
+                  <i class="fa-solid fa-file-pen"></i>
+                </a>
+              </td>
+            `;
+
+            originalTable.appendChild(row);
+          });
+        } else {
+          resultTable.innerHTML = '<tr><td colspan="13">No results found.</td></tr>';
+        }
+      })
+  })
 </script>
 <?php include './parts/html-foot.php' ?>
