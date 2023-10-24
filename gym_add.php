@@ -68,7 +68,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
               </div>
               <div class="mb-3">
                 <input class="form-control" id="gym_photo" name="gym_photo" hidden>
-                <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div>
+                <button type="button" class="btn btn-outline-primary" onclick="triggerUpload('gym_photo')">點選上傳圖片</button>
                 <div class="form-text"></div>
                 <div style="width: 300px">
                   <img src="" alt="" id="gym_photo_img" width="100%" />

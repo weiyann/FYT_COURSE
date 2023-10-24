@@ -49,12 +49,12 @@ $option_d = $pdo->query($sql_d)->fetchAll();
             </div>
             <div class="mb-3">
               <label for="begin_time" class="form-label">開始營業時間</label>
-              <input type="text" class="form-control" id="begin_time" name="begin_time" value=<?= htmlentities($row['begin_time']) ?>>
+              <input type="time" class="form-control" id="begin_time" name="begin_time" value=<?= htmlentities($row['begin_time']) ?>>
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
               <label for="end_time" class="form-label">結束營業時間</label>
-              <input type="text" class="form-control" id="end_time" name="end_time" value=<?= htmlentities($row['end_time']) ?>>
+              <input type="time" class="form-control" id="end_time" name="end_time" value=<?= htmlentities($row['end_time']) ?>>
               <div class="form-text"></div>
             </div>
             <div class="mb-3">
@@ -79,7 +79,7 @@ $option_d = $pdo->query($sql_d)->fetchAll();
                 </div>
                 <div class="mb-3">
                 <input class="form-control" id="gym_photo" name="gym_photo" value=<?= htmlentities($row['gym_photo']) ?> hidden>
-                <div style="cursor: pointer;" onclick="triggerUpload('gym_photo')">點選上傳圖片</div>
+                <button type="button" class="btn btn-outline-primary" onclick="triggerUpload('gym_photo')">點選上傳圖片</button>
                 <div class="form-text"></div>
                 <div style="width: 300px">
                   <img src=<?="/FYT-course版型/uploads/" . htmlentities($row['gym_photo'])?> alt="" id="gym_photo_img" width="100%" />

@@ -146,9 +146,10 @@ $rows = $pdo->query($sql)->fetchAll();
 
 
       </div>
+      <a href="gym_list.php" class="btn btn-secondary">顯示所有資料</a>
       <div class="btn btn-danger" onclick="deleteMultiple(event)"><i class="fa-solid fa-trash-can text-white"></i>
         刪除勾選的資料<span id="selectedCount"></span>筆</div>
-      <div class="btn btn-primary" onclick="movetoadd(event)">新增健身房資料</div>
+        <a href="gym_add.php" class="btn btn-primary">新增健身房資料</a>
       <div>
         <?= "總共 $totalRows 筆/總共 $totalPages 頁" ?>
       </div>
@@ -301,10 +302,7 @@ $rows = $pdo->query($sql)->fetchAll();
       location.href = 'gym_deletemultiple.php?gym_ids=' + selectedIds.join(',');
     }
   }
-  function movetoadd(e) {
-    location.href = 'gym_add.php'
-  }
-
+  
 
   const searchForm = document.querySelector("#search-form");
 
