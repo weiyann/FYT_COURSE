@@ -123,7 +123,7 @@ $rows = $pdo->query($sql)->fetchAll();
             </div>
           </div>
         </form>
-        
+
         <div class="blog_search d-flex allbtn ">
           <div class="input-group mb-2">
             <select class="form-select form-control" id="district_name" name="district_name" style="width:140px">
@@ -141,7 +141,7 @@ $rows = $pdo->query($sql)->fetchAll();
             <button type="submit" id="search"><i class="fa-solid fa-magnifying-glass"></i></button>
           </div>
         </div>
-              
+
 
 
 
@@ -149,7 +149,7 @@ $rows = $pdo->query($sql)->fetchAll();
       <a href="gym_list.php" class="btn btn-secondary">顯示所有資料</a>
       <div class="btn btn-danger" onclick="deleteMultiple(event)"><i class="fa-solid fa-trash-can text-white"></i>
         刪除勾選的資料<span id="selectedCount"></span>筆</div>
-        <a href="gym_add.php" class="btn btn-primary">新增健身房資料</a>
+      <a href="gym_add.php" class="btn btn-primary">新增健身房資料</a>
       <div>
         <?= "總共 $totalRows 筆/總共 $totalPages 頁" ?>
       </div>
@@ -172,6 +172,7 @@ $rows = $pdo->query($sql)->fetchAll();
             <th scope="col">營業時間</th>
             <!-- <th scope="col">結束營業時間</th> -->
             <th scope="col">地址</th>
+            <th scope="col">預覽</th>
             <th scope="col">資料建立時間</th>
             <th scope="col">
               <i class="fa-solid fa-file-pen"></i>
@@ -200,19 +201,19 @@ $rows = $pdo->query($sql)->fetchAll();
                   <img src="<?= "/FYT-course版型/uploads/" . $r['gym_photo'] ?>" alt="" width='100%'>
                 </div>
               </td>
-              <td class="text-truncate " style="max-width:200px">
+              <td class="text-truncate" style="max-width:200px">
                 <?= htmlentities($r['gym_description']) ?>
               </td>
-
               <td>
                 <?= substr($r['begin_time'], 0, -3) . '~' . substr($r['end_time'], 0, -3) ?>
               </td>
-              <!-- <td>
-                <?= substr($r['end_time'], 0, -3) ?>
-              </td> -->
-
               <td>
                 <?= $r['district_name'] . htmlentities($r['gym_address']) ?>
+              </td>
+              <td>
+                <a href="gym_info.php?gym_id=<?= $r['gym_id'] ?>">
+                <i class="fa-solid fa-circle-info text-info"></i>
+              </a>
               </td>
               <td>
                 <?= substr($r['created_at'], 0, -3); ?>
@@ -302,7 +303,7 @@ $rows = $pdo->query($sql)->fetchAll();
       location.href = 'gym_deletemultiple.php?gym_ids=' + selectedIds.join(',');
     }
   }
-  
+
 
   const searchForm = document.querySelector("#search-form");
 
@@ -376,6 +377,6 @@ $rows = $pdo->query($sql)->fetchAll();
             let districtVal = district_name.value;
             location.href = 'gym_list.php?text=' + districtVal;
         })
-    */    
+    */
 </script>
 <?php include './parts/html-foot.php' ?>
